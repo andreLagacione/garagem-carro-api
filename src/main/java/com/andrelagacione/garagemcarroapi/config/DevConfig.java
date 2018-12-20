@@ -13,6 +13,7 @@ import com.andrelagacione.garagemcarroapi.services.DBService;
 @Configuration
 @Profile("dev")
 public class DevConfig {
+
 	@Autowired
 	private DBService dbService;
 	
@@ -20,7 +21,8 @@ public class DevConfig {
 	private String strategy;
 	
 	@Bean
-	public boolean instantiateTestDatabase() throws ParseException {
+	public boolean instantiateDatabase() throws ParseException {
+		
 		if (!"create".equals(strategy)) {
 			return false;
 		}
@@ -28,5 +30,6 @@ public class DevConfig {
 		dbService.instantiateTestDataBase();
 		return true;
 	}
+	
 
 }

@@ -18,7 +18,8 @@ import javassist.tools.rmi.ObjectNotFoundException;
 
 @Service
 public class ModeloService {
-	@Autowired ModeloRepository modeloRepository;
+	@Autowired
+	private ModeloRepository modeloRepository;
 	
 	public List<Modelo> findAll() {
 		return modeloRepository.findAll();
