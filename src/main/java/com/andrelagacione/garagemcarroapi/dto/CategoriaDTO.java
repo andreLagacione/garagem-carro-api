@@ -11,14 +11,13 @@ import com.andrelagacione.garagemcarroapi.domain.Categoria;
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-private Integer id;
+	private Integer id;
 	
 	@NotEmpty(message="Preenchimento obrigatório.")
 	@Length(min=3, max=20, message="O tamanho deve ser entre 3 e 20 caractéres.")
 	private String nome;
 	
-	public CategoriaDTO() {
-	}
+	public CategoriaDTO() {}
 	
 	public CategoriaDTO(Categoria categoria) {
 		id = categoria.getId();

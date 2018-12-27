@@ -1,11 +1,14 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Categoria implements Serializable {
@@ -16,8 +19,10 @@ public class Categoria implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	public Categoria() {
-	}
+	@ManyToMany(mappedBy = "categorias")
+	private List<Veiculo> veiculos = new ArrayList<>();
+	
+	public Categoria() {}
 
 	public Categoria(Integer id, String nome) {
 		super();
@@ -25,7 +30,7 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -39,6 +44,14 @@ public class Categoria implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public List<Veiculo> getVeiculos() {
+		return veiculos;
+	}
+
+	public void setVeiculos(List<Veiculo> veiculos) {
+		this.veiculos = veiculos;
 	}
 
 	@Override
