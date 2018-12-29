@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import com.andrelagacione.garagemcarroapi.dto.CategoriaDTO;
 import com.andrelagacione.garagemcarroapi.repositories.CategoriaRespository;
-
-import javassist.tools.rmi.ObjectNotFoundException;
+import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
