@@ -13,18 +13,12 @@ import org.springframework.stereotype.Service;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
 import com.andrelagacione.garagemcarroapi.repositories.VeiculoRepository;
-
-import javassist.tools.rmi.ObjectNotFoundException;
+import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class VeiculoService {
 	@Autowired
 	private VeiculoRepository veiculoRepository;
-	
-	/*
-	@Autowired
-	private CategoriaRespository categoriaRespository;
-	*/
 	
 	public List<Veiculo> findAll() {
 		return veiculoRepository.findAll();
@@ -83,13 +77,5 @@ public class VeiculoService {
 		newVeiculo.setModelo(veiculo.getModelo());
 		newVeiculo.setDescricao(veiculo.getDescricao());
 	}
-	
-	/*	
-	public Page<Veiculo> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		List<Categoria> categorias = categoriaRespository.findAllById(ids);
-		return veiculoRepository.findByNome(nome, categorias, pageRequest);
-	}
-	*/
 	
 }

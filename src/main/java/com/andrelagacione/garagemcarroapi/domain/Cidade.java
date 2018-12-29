@@ -1,36 +1,34 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Marca implements Serializable {
+public class Cidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="marca")
-	private List<Veiculo> veiculos = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name="estado_id")
+	private Estado estado;
 	
-	public Marca() {}
-
-	public Marca(Integer id, String nome) {
+	public Cidade() {}
+	
+	public Cidade(Integer id, String nome, Estado estado) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.estado = estado;
 	}
 
 	public Integer getId() {
@@ -49,12 +47,12 @@ public class Marca implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Veiculo> getVeiculos() {
-		return veiculos;
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setVeiculos(List<Veiculo> veiculos) {
-		this.veiculos = veiculos;
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	@Override
@@ -73,7 +71,7 @@ public class Marca implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Marca other = (Marca) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -81,5 +79,4 @@ public class Marca implements Serializable {
 			return false;
 		return true;
 	}
-
 }

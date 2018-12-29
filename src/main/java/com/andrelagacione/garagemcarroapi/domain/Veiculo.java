@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,6 +29,10 @@ public class Veiculo implements Serializable {
 	private Integer portas;
 	private String modelo;
 	private String descricao;
+	
+	@ManyToOne
+	@JoinColumn(name="marca_id")
+	private Marca marca;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -122,6 +127,14 @@ public class Veiculo implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+	
+	public Marca getMarca() {
+		return marca;
+	}
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
 	}
 
 	@Override

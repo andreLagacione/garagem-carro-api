@@ -36,24 +36,6 @@ public class VeiculoResource {
 		return ResponseEntity.ok().body(veiculosDTO);
 	}
 	
-	/*
-	@RequestMapping(value="/page", method=RequestMethod.GET)
-	public ResponseEntity<Page<VeiculoDTO>> findPage(
-		@RequestParam(value="nome", defaultValue="") String nome,
-		@RequestParam(value="categorias", defaultValue="") String categorias,
-		@RequestParam(value="page", defaultValue="0") Integer page,
-		@RequestParam(value="size", defaultValue="25") Integer size,
-		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
-		@RequestParam(value="direction", defaultValue="ASC") String direction
-	) {
-		String nomeDecoded = URL.decodeParam(nome);
-		List<Integer> ids = URL.decodeintList(categorias);
-		Page<Veiculo> veiculos = veiculoService.search(nomeDecoded, ids, page, size, orderBy, direction);
-		Page<VeiculoDTO> veiculosDTO = veiculos.map(obj -> new VeiculoDTO(obj));
-		return ResponseEntity.ok().body(veiculosDTO);
-	}
-	*/
-	
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<VeiculoDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,

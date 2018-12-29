@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.dto.MarcaDTO;
 import com.andrelagacione.garagemcarroapi.repositories.MarcaRepository;
-
-import javassist.tools.rmi.ObjectNotFoundException;
+import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class MarcaService {

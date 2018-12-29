@@ -13,24 +13,26 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Marca implements Serializable {
+public class Estado implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private String sigla;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="marca")
-	private List<Veiculo> veiculos = new ArrayList<>();
+	@OneToMany(mappedBy="estado")
+	private List<Cidade> cidades = new ArrayList<>();
 	
-	public Marca() {}
-
-	public Marca(Integer id, String nome) {
+	public Estado() {}
+	
+	public Estado(Integer id, String nome, String sigla) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.sigla = sigla;
 	}
 
 	public Integer getId() {
@@ -48,13 +50,21 @@ public class Marca implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	public List<Veiculo> getVeiculos() {
-		return veiculos;
+	
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setVeiculos(List<Veiculo> veiculos) {
-		this.veiculos = veiculos;
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
+	}
+	
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
 	}
 
 	@Override
@@ -73,7 +83,7 @@ public class Marca implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Marca other = (Marca) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -81,5 +91,4 @@ public class Marca implements Serializable {
 			return false;
 		return true;
 	}
-
 }
