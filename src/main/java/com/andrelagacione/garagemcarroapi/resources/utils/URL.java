@@ -14,7 +14,7 @@ public class URL {
 		}
 	}
 	
-	public static List<Integer> decodeintList(String s) {
+	public static List<Integer> decodeIntList(String s) {
 		String[] vet = s.split(",");
 		List<Integer> list = new ArrayList<>();
 		

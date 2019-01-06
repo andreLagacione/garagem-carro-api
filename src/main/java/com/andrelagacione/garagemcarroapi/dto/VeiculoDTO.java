@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
+import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 
 public class VeiculoDTO implements Serializable {
@@ -29,7 +30,10 @@ public class VeiculoDTO implements Serializable {
 	private String descricao;
 	
 	@NotEmpty(message = "Selecione uma categoria.")
-	private List<Categoria> categoria;
+	private List<Categoria> categorias;
+	
+	@NotEmpty(message = "Selecione uma marca.")
+	private Marca marca;
 	
 	public VeiculoDTO() {}
 	
@@ -42,6 +46,8 @@ public class VeiculoDTO implements Serializable {
 		portas = veiculo.getPortas();
 		modelo = veiculo.getModelo();
 		descricao = veiculo.getDescricao();
+		marca = veiculo.getMarca();
+		categorias = veiculo.getCategorias();
 	}
 
 	public Integer getId() {
@@ -108,12 +114,20 @@ public class VeiculoDTO implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<Categoria> getCategoria() {
-		return categoria;
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setCategoria(List<Categoria> categoria) {
-		this.categoria = categoria;
+	public void setCategorias(List<Categoria> categoria) {
+		this.categorias = categoria;
+	}
+
+	public Marca getMarca() {
+		return marca;
+	}
+
+	public void setMarca(Marca marcas) {
+		this.marca = marcas;
 	}
 
 }

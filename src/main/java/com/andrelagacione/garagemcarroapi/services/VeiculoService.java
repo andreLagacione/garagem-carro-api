@@ -64,7 +64,8 @@ public class VeiculoService {
 			veiculoDTO.getCilindradas(),
 			veiculoDTO.getPortas(),
 			veiculoDTO.getModelo(),
-			veiculoDTO.getDescricao()
+			veiculoDTO.getDescricao(),
+			veiculoDTO.getMarca()
 		);
 	}
 	

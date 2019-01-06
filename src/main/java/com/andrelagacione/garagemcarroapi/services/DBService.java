@@ -35,13 +35,26 @@ public class DBService {
 	private CidadeRepository cidadeRepository;
 	
 	public void instantiateTestDataBase() throws ParseException {
+		Categoria categoria1 = new Categoria(null, "Carros");
+		Categoria categoria2 = new Categoria(null, "Esportivos");
+		
 		Marca marca1 = new Marca(null, "Ford");
 		Marca marca2 = new Marca(null, "Chevrolet");
 		
-		Veiculo veiculo1 = new Veiculo(null, 350550.0, "Preto", 350.0, null, 2, "Mustang GT", "Mustang GT preto");
-		Veiculo veiculo2 = new Veiculo(null, 412541.0, "Vermelho", 501.0, null, 2, "Corvete", "Corvete vermelho");
-				
-		Categoria categoria1 = new Categoria(null, "Carros");
+		Veiculo veiculo1 = new Veiculo(null, 350550.0, "Preto", 350.0, null, 2, "Mustang GT", "Mustang GT preto", null);
+		Veiculo veiculo2 = new Veiculo(null, 412541.0, "Vermelho", 501.0, null, 2, "Corvete", "Corvete vermelho", null);
+		
+		marca1.getVeiculos().add(veiculo1);
+		marca2.getVeiculos().add(veiculo2);
+		
+		veiculo1.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
+		veiculo1.setMarca(marca1);
+		veiculo2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
+		veiculo2.setMarca(marca2);
+		
+		categoriaRespository.saveAll(Arrays.asList(categoria1, categoria2));
+		marcaRepository.saveAll(Arrays.asList(marca1, marca2));
+		veiculoRepository.saveAll(Arrays.asList(veiculo1, veiculo2));
 		
 		Estado estado1 = new Estado(null, "São Paulo", "SP");
 		Estado estado2 = new Estado(null, "Santa Catarina", "SC");
@@ -51,18 +64,9 @@ public class DBService {
 		Cidade cidade3 = new Cidade(null, "Blumenau", estado2);
 		Cidade cidade4 = new Cidade(null, "Florianópolis", estado2);
 		
-		veiculo1.getCategorias().add(categoria1);
-		veiculo2.getCategorias().add(categoria1);
-		
-		categoria1.getVeiculos().add(veiculo1);
-		categoria1.getVeiculos().add(veiculo2);
-		
 		estado1.getCidades().addAll(Arrays.asList(cidade1, cidade2));
 		estado2.getCidades().addAll(Arrays.asList(cidade3, cidade4));
 		
-		categoriaRespository.saveAll(Arrays.asList(categoria1));
-		marcaRepository.saveAll(Arrays.asList(marca1, marca2));
-		veiculoRepository.saveAll(Arrays.asList(veiculo1, veiculo2));
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3, cidade4));
 		
