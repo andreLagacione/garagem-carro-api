@@ -24,9 +24,9 @@ public class CidadeService {
 		return cidadeRepository.findCidades(estadoId);
 	}
 	
-	public Page<Cidade> findPage(Integer page, Integer size, String orderBy, String direction) {
+	public Page<Cidade> findPage(Integer page, Integer size, String orderBy, String direction, Integer idEstado) {
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
-		return cidadeRepository.findAll(pageRequest);
+		return cidadeRepository.findCidadesPage(idEstado, pageRequest);
 	}
 	
 	public Cidade find(Integer id) throws ObjectNotFoundException {
@@ -56,7 +56,7 @@ public class CidadeService {
 	}
 	
 	public Cidade fromDto(CidadeDTO cidadeDTO) {
-		return new Cidade(cidadeDTO.getId(), cidadeDTO.getNome(), null);
+		return new Cidade(cidadeDTO.getId(), cidadeDTO.getNome(), cidadeDTO.getEstado());
 	}
 	
 	public void updateData(Cidade newCidade, Cidade cidade) {

@@ -3,18 +3,21 @@ package com.andrelagacione.garagemcarroapi.dto;
 import java.io.Serializable;
 
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
+import com.andrelagacione.garagemcarroapi.domain.Estado;
 
 public class CidadeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private String nome;
+	private Estado estado;
 	
 	public CidadeDTO() {}
 	
 	public CidadeDTO(Cidade cidade) {
 		id = cidade.getId();
-		nome= cidade.getNome();
+		nome = cidade.getNome();
+		estado = cidade.getEstado();
 	}
 
 	public Integer getId() {
@@ -31,6 +34,14 @@ public class CidadeDTO implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 }
