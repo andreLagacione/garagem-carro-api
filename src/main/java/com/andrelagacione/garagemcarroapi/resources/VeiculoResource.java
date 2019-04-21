@@ -40,7 +40,7 @@ public class VeiculoResource {
 	public ResponseEntity<Page<VeiculoDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="size", defaultValue="25") Integer size,
-			@RequestParam(value="ordrBy", defaultValue="nome") String orderBy,
+			@RequestParam(value="ordrBy", defaultValue="modelo") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
 		Page<Veiculo> veiculos = veiculoService.findPage(page, size, direction, orderBy);
@@ -55,8 +55,18 @@ public class VeiculoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody VeiculoDTO veiculoDTO) {
-		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
+	public ResponseEntity<Void> insert(
+			@RequestBody Double valor,
+			@RequestBody String cor,
+			@RequestBody Double cavalos,
+			@RequestBody Double cilindradas,
+			@RequestBody Integer portas,
+			@RequestBody String modelo,
+			@RequestBody String descricao,
+			@RequestBody Integer idMarca,
+			@RequestBody List<Integer> idCategoria
+		) {
+		Veiculo veiculo = veiculoService.fromDto(valor, cor, cavalos, cilindradas, portas, modelo, descricao, idMarca, idCategoria);
 		veiculo = veiculoService.insert(veiculo);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(veiculo.getId()).toUri();
@@ -79,4 +89,5 @@ public class VeiculoResource {
 		veiculoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
 }

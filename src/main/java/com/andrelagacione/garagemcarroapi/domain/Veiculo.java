@@ -45,7 +45,7 @@ public class Veiculo implements Serializable {
 	
 	public Veiculo() {}
 
-	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String modelo, String descricao, Marca marca) {
+	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String modelo, String descricao) {
 		super();
 		this.id = id;
 		this.valor = valor;
@@ -55,7 +55,6 @@ public class Veiculo implements Serializable {
 		this.portas = portas;
 		this.modelo = modelo;
 		this.descricao = descricao;
-		this.marca = marca;
 	}
 
 	public Integer getId() {

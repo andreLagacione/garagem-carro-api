@@ -36,21 +36,21 @@ public class DBService {
 	
 	public void instantiateTestDataBase() throws ParseException {
 		Categoria categoria1 = new Categoria(null, "Carros");
-		Categoria categoria2 = new Categoria(null, "Esportivos");
+		Categoria categoria2 = new Categoria(null, "Esportivos(as)");
 		
 		Marca marca1 = new Marca(null, "Ford");
 		Marca marca2 = new Marca(null, "Chevrolet");
 		
-		Veiculo veiculo1 = new Veiculo(null, 350550.0, "Preto", 350.0, null, 2, "Mustang GT", "Mustang GT preto", null);
-		Veiculo veiculo2 = new Veiculo(null, 412541.0, "Vermelho", 501.0, null, 2, "Corvete", "Corvete vermelho", null);
+		Veiculo veiculo1 = new Veiculo(null, 350550.0, "Preto", 350.0, null, 2, "Mustang GT", "Mustang GT preto");
+		Veiculo veiculo2 = new Veiculo(null, 412541.0, "Vermelho", 501.0, null, 2, "Corvete", "Corvete vermelho");
 		
 		marca1.getVeiculos().add(veiculo1);
 		marca2.getVeiculos().add(veiculo2);
 		
-		veiculo1.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		veiculo1.setMarca(marca1);
-		veiculo2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
+		veiculo1.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		veiculo2.setMarca(marca2);
+		veiculo2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		
 		categoriaRespository.saveAll(Arrays.asList(categoria1, categoria2));
 		marcaRepository.saveAll(Arrays.asList(marca1, marca2));
