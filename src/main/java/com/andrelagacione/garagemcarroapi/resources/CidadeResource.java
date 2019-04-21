@@ -23,26 +23,29 @@ import com.andrelagacione.garagemcarroapi.services.CidadeService;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 
 @RestController
-@RequestMapping(value="{idEstado}/cidades")
+@RequestMapping(value="/cidades")
 public class CidadeResource {
 	@Autowired
 	private CidadeService cidadeService;
 	
-	@RequestMapping(value="/lista" method=RequestMethod.GET)
-	public ResponseEntity<List<CidadeDTO>> findAll(@PathVariable Integer idEstado) throws ObjectNotFoundException {
+	@RequestMapping(value="/lista", method=RequestMethod.GET)
+	public ResponseEntity<List<CidadeDTO>> findAll(
+		@RequestParam(value="idEstado") Integer idEstado
+	) throws ObjectNotFoundException {
 		List<Cidade> cidades = cidadeService.findByEstado(idEstado);
 		List<CidadeDTO> cidadeDTO = cidades.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(cidadeDTO);
 	}
 	
-	@RequestMapping(value="/page", method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<CidadeDTO>> findPage(
+		@RequestParam(value="idEstado") Integer idEstado,
 		@RequestParam(value="page", defaultValue="0") Integer page,
 		@RequestParam(value="size", defaultValue="25") Integer size,
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 		@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		Page<Cidade> cidades = cidadeService.findPage(page, size, orderBy, direction);
+		Page<Cidade> cidades = cidadeService.findPage(page, size, orderBy, direction, idEstado);
 		Page<CidadeDTO> cidadeDTO = cidades.map(obj -> new CidadeDTO(obj));
 		return ResponseEntity.ok().body(cidadeDTO);
 	}
