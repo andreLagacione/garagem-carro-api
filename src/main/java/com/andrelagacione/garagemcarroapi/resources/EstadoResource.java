@@ -62,4 +62,21 @@ public class EstadoResource {
 					.path("/{id}").buildAndExpand(estado.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(
+			@Valid @RequestBody EstadoDTO estadoDTO,
+			@PathVariable Integer id
+	) throws ObjectNotFoundException {
+		Estado estado = estadoService.fromDto(estadoDTO);
+		estado.setId(id);
+		estado = estadoService.update(estado);
+		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+		estadoService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 }
