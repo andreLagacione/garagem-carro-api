@@ -11,6 +11,7 @@ public class CidadeDTO implements Serializable {
 	private Integer id;
 	private String nome;
 	private Estado estado;
+	private Integer idEstado;
 	
 	public CidadeDTO() {}
 	
@@ -42,6 +43,14 @@ public class CidadeDTO implements Serializable {
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+	
+	public Integer getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(Integer idEstado) {
+		this.idEstado = idEstado;
 	}
 
 }

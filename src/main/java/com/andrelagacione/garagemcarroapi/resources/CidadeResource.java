@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
+import com.andrelagacione.garagemcarroapi.domain.Estado;
 import com.andrelagacione.garagemcarroapi.dto.CidadeDTO;
 import com.andrelagacione.garagemcarroapi.services.CidadeService;
+import com.andrelagacione.garagemcarroapi.services.EstadoService;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 
 @RestController
@@ -27,6 +29,9 @@ import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundExce
 public class CidadeResource {
 	@Autowired
 	private CidadeService cidadeService;
+	
+	@Autowired
+	private EstadoService estadoService;
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<CidadeDTO>> findAll(
@@ -59,6 +64,8 @@ public class CidadeResource {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CidadeDTO cidadeDTO) {
 		Cidade cidade = cidadeService.fromDto(cidadeDTO);
+		Estado estado = estadoService.find(cidadeDTO.getIdEstado());
+		cidade.setEstado(estado);
 		cidade = cidadeService.insert(cidade);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(cidade.getId()).toUri();
