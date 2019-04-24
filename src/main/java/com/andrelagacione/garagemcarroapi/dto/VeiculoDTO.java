@@ -18,8 +18,8 @@ public class VeiculoDTO implements Serializable {
 	private Integer portas;
 	private String modelo;
 	private String descricao;
-	private List<Integer> idCategorias;
-	private Integer idMarca;
+	private List<Categoria> categorias;
+	private Marca marca;
 	
 	public VeiculoDTO() {}
 	
@@ -32,8 +32,8 @@ public class VeiculoDTO implements Serializable {
 		portas = veiculo.getPortas();
 		modelo = veiculo.getModelo();
 		descricao = veiculo.getDescricao();
-		idMarca = veiculo.getMarca();
-		idCategorias = veiculo.getCategorias();
+		marca = veiculo.getMarca();
+		categorias = veiculo.getCategorias();
 	}
 
 	public Integer getId() {
@@ -100,20 +100,20 @@ public class VeiculoDTO implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<Integer> getCategorias() {
-		return idCategorias;
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setCategorias(List<Integer> idCategorias) {
-		this.idCategorias = idCategorias;
+	public void setCategorias(List<Categoria> categoria) {
+		this.categorias = categoria;
 	}
 
-	public Integer getMarca() {
-		return idMarca;
+	public Marca getMarca() {
+		return marca;
 	}
 
-	public void setMarca(Integer idMarca) {
-		this.idMarca = idMarca;
+	public void setMarca(Marca marcas) {
+		this.marca = marcas;
 	}
 
 }

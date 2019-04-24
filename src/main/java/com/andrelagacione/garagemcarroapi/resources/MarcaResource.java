@@ -29,14 +29,14 @@ public class MarcaResource {
 	@Autowired
 	private MarcaService marcaService;
 	
-	@RequestMapping(value="/lista", method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<MarcaDTO>> findAll() {
 		List<Marca> marcas = marcaService.findAll();
 		List<MarcaDTO> marcasDTO = marcas.stream().map(obj -> new MarcaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(marcasDTO);
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<MarcaDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="size", defaultValue="25") Integer size,

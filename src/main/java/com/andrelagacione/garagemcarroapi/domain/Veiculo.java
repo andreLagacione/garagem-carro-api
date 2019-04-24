@@ -32,7 +32,7 @@ public class Veiculo implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name="marca_id")
-	private Integer idMarca;
+	private Marca marca;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -41,7 +41,7 @@ public class Veiculo implements Serializable {
 		joinColumns = @JoinColumn(name = "veiculo_id"),
 		inverseJoinColumns = @JoinColumn(name = "categoria_id")
 	)
-	private List<Integer> idCategorias = new ArrayList<>();
+	private List<Categoria> categorias = new ArrayList<>();
 	
 	public Veiculo() {}
 
@@ -121,20 +121,20 @@ public class Veiculo implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public List<Integer> getCategorias() {
-		return idCategorias;
+	public List<Categoria> getCategorias() {
+		return categorias;
 	}
 
-	public void setCategorias(List<Integer> idCategorias) {
-		this.idCategorias = idCategorias;
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
 	}
 	
-	public Integer getMarca() {
-		return idMarca;
+	public Marca getMarca() {
+		return marca;
 	}
 
-	public void setMarca(Integer id) {
-		this.idMarca = id;
+	public void setMarca(Marca marca) {
+		this.marca = marca;
 	}
 
 	@Override
