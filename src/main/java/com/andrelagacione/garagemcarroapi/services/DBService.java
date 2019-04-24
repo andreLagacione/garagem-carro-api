@@ -47,10 +47,10 @@ public class DBService {
 		marca1.getVeiculos().add(veiculo1);
 		marca2.getVeiculos().add(veiculo2);
 		
-		veiculo1.setMarca(marca1);
-		veiculo1.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
-		veiculo2.setMarca(marca2);
-		veiculo2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
+		veiculo1.setMarca(1);
+		veiculo1.getCategorias().addAll(Arrays.asList(1, 2));
+		veiculo2.setMarca(2);
+		veiculo2.getCategorias().addAll(Arrays.asList(1, 2));
 		
 		categoriaRespository.saveAll(Arrays.asList(categoria1, categoria2));
 		marcaRepository.saveAll(Arrays.asList(marca1, marca2));

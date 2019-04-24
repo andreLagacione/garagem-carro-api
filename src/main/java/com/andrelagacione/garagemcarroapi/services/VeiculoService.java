@@ -46,7 +46,7 @@ public class VeiculoService {
 	public Veiculo insert(Veiculo veiculo) {
 		veiculo.setId(null);
 		veiculo = veiculoRepository.save(veiculo);
-		categoriaRespository.saveAll(veiculo.getCategorias());
+		// categoriaRespository.saveAll(veiculo.getCategorias());
 		return veiculo;
 	}
 	
@@ -81,11 +81,11 @@ public class VeiculoService {
 	
 	public Veiculo fromDto(Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String modelo, String descricao, Integer idMarca, List<Integer> idCategoria) {
 		Veiculo veiculo = new Veiculo(null, valor, cor, cavalos, cilindradas, portas, modelo, descricao);
-		Marca marca = new Marca(idMarca, null);
-		this.adicionarCategorias(veiculo, idCategoria);
+		// Marca marca = new Marca(idMarca, null);
+		// this.adicionarCategorias(veiculo, idCategoria);
 		
-		marca.getVeiculos().add(veiculo);
-		veiculo.setMarca(marca);
+		// marca.getVeiculos().add(veiculo);
+		// veiculo.setMarca(marca);
 		
 		return veiculo;
 	}
@@ -105,7 +105,7 @@ public class VeiculoService {
 	private void adicionarCategorias(Veiculo veiculo, List<Integer> categorias) {
 		for (Integer id : categorias) {
 			Categoria categoria = new Categoria(id, null);
-			veiculo.getCategorias().addAll(Arrays.asList(categoria));
+			// veiculo.getCategorias().addAll(Arrays.asList(categoria));
 		}
 	}
 }
