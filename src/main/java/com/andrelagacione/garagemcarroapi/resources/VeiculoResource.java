@@ -29,14 +29,14 @@ public class VeiculoResource {
 	@Autowired
 	private VeiculoService veiculoService;
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<VeiculoDTO>> findAll() {
 		List<Veiculo> veiculos = veiculoService.findAll();
 		List<VeiculoDTO> veiculosDTO = veiculos.stream().map(obj -> new VeiculoDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(veiculosDTO);
 	}
 	
-	@RequestMapping(value="/page", method=RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<Page<VeiculoDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="size", defaultValue="25") Integer size,
