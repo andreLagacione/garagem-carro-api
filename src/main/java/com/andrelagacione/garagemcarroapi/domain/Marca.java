@@ -21,10 +21,6 @@ public class Marca implements Serializable {
 	private Integer id;
 	private String nome;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="marca")
-	private List<Veiculo> veiculos = new ArrayList<>();
-	
 	public Marca() {}
 
 	public Marca(Integer id, String nome) {
@@ -47,14 +43,6 @@ public class Marca implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public List<Veiculo> getVeiculos() {
-		return veiculos;
-	}
-
-	public void setVeiculos(List<Veiculo> veiculos) {
-		this.veiculos = veiculos;
 	}
 
 	@Override

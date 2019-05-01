@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
+import com.andrelagacione.garagemcarroapi.services.MarcaService;
 import com.andrelagacione.garagemcarroapi.services.VeiculoService;
 
 import javassist.tools.rmi.ObjectNotFoundException;
@@ -28,6 +30,9 @@ import javassist.tools.rmi.ObjectNotFoundException;
 public class VeiculoResource {
 	@Autowired
 	private VeiculoService veiculoService;
+	
+	@Autowired
+	private MarcaService marcaService;
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<VeiculoDTO>> findAll() {
@@ -55,18 +60,11 @@ public class VeiculoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(
-			@RequestBody Double valor,
-			@RequestBody String cor,
-			@RequestBody Double cavalos,
-			@RequestBody Double cilindradas,
-			@RequestBody Integer portas,
-			@RequestBody String modelo,
-			@RequestBody String descricao,
-			@RequestBody Integer idMarca,
-			@RequestBody List<Integer> idCategoria
-		) {
-		Veiculo veiculo = veiculoService.fromDto(valor, cor, cavalos, cilindradas, portas, modelo, descricao, idMarca, idCategoria);
+	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) {
+		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
+		Marca marca = marcaService.find(veiculoDTO.getIdMarca());
+		veiculo.setMarca(marca);
+		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
 		veiculo = veiculoService.insert(veiculo);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(veiculo.getId()).toUri();
@@ -75,11 +73,14 @@ public class VeiculoResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(
-		@Valid @RequestBody VeiculoDTO veiculoDto,
+		@Valid @RequestBody VeiculoDTO veiculoDTO,
 		@PathVariable Integer id
 	) throws ObjectNotFoundException {
-		Veiculo veiculo = veiculoService.fromDto(veiculoDto);
+		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
 		veiculo.setId(id);
+		Marca marca = marcaService.find(veiculoDTO.getIdMarca());
+		veiculo.setMarca(marca);
+		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
 		veiculo = veiculoService.update(veiculo);
 		return ResponseEntity.noContent().build();
 	}

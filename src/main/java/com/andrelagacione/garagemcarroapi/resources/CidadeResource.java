@@ -79,6 +79,8 @@ public class CidadeResource {
 	) throws ObjectNotFoundException {
 		Cidade cidade = cidadeService.fromDto(cidadeDTO);
 		cidade.setId(id);
+		Estado estado = estadoService.find(cidadeDTO.getIdEstado());
+		cidade.setEstado(estado);
 		cidade = cidadeService.update(cidade);
 		return ResponseEntity.noContent().build();
 	}

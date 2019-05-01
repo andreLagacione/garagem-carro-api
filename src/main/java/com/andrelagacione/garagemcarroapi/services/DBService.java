@@ -44,9 +44,6 @@ public class DBService {
 		Veiculo veiculo1 = new Veiculo(null, 350550.0, "Preto", 350.0, null, 2, "Mustang GT", "Mustang GT preto");
 		Veiculo veiculo2 = new Veiculo(null, 412541.0, "Vermelho", 501.0, null, 2, "Corvete", "Corvete vermelho");
 		
-		marca1.getVeiculos().add(veiculo1);
-		marca2.getVeiculos().add(veiculo2);
-		
 		veiculo1.setMarca(marca1);
 		veiculo1.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		veiculo2.setMarca(marca2);

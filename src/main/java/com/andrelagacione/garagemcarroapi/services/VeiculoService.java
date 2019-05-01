@@ -1,6 +1,6 @@
 package com.andrelagacione.garagemcarroapi.services;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
-import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
 import com.andrelagacione.garagemcarroapi.repositories.CategoriaRespository;
@@ -28,6 +27,9 @@ public class VeiculoService {
 	@Autowired
 	private CategoriaRespository categoriaRespository;
 	
+	@Autowired
+	private CategoriaService categoriaService;
+	
 	public List<Veiculo> findAll() {
 		return veiculoRepository.findAll();
 	}
@@ -38,8 +40,9 @@ public class VeiculoService {
 	}
 	
 	public Veiculo find(Integer id) throws ObjectNotFoundException {
-		Optional<Veiculo> veiculo = veiculoRepository.findById(id);
-		return veiculo.orElseThrow(() -> new ObjectNotFoundException("Veiculo não encontrado!"));
+		Optional<Veiculo> veiculoById = veiculoRepository.findById(id);
+		// TODO - para mostrar na tela, fazer um end-point pra buscar as categorias separadas
+		return veiculoById.orElseThrow(() -> new ObjectNotFoundException("Veiculo não encontrado!"));
 	}
 	
 	@Transactional
@@ -67,27 +70,7 @@ public class VeiculoService {
 	}
 	
 	public Veiculo fromDto(VeiculoDTO veiculoDTO) {
-		return new Veiculo(
-			null,
-			veiculoDTO.getValor(),
-			veiculoDTO.getCor(),
-			veiculoDTO.getCavalos(),
-			veiculoDTO.getCilindradas(),
-			veiculoDTO.getPortas(),
-			veiculoDTO.getModelo(),
-			veiculoDTO.getDescricao()
-		);
-	}
-	
-	public Veiculo fromDto(Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String modelo, String descricao, Integer idMarca, List<Integer> idCategoria) {
-		Veiculo veiculo = new Veiculo(null, valor, cor, cavalos, cilindradas, portas, modelo, descricao);
-		Marca marca = new Marca(idMarca, null);
-		this.adicionarCategorias(veiculo, idCategoria);
-		
-		marca.getVeiculos().add(veiculo);
-		veiculo.setMarca(marca);
-		
-		return veiculo;
+		return new Veiculo(null, veiculoDTO.getValor(), veiculoDTO.getCor(), veiculoDTO.getCavalos(), veiculoDTO.getCilindradas(), veiculoDTO.getPortas(), veiculoDTO.getModelo(), veiculoDTO.getDescricao());
 	}
 	
 	public void updateData(Veiculo newVeiculo, Veiculo veiculo) {
@@ -102,10 +85,14 @@ public class VeiculoService {
 		newVeiculo.setCategorias(veiculo.getCategorias());
 	}
 	
-	private void adicionarCategorias(Veiculo veiculo, List<Integer> categorias) {
-		for (Integer id : categorias) {
-			Categoria categoria = new Categoria(id, null);
-			veiculo.getCategorias().addAll(Arrays.asList(categoria));
+	public Veiculo setarCategorias(Veiculo veiculo, List<Integer> idCategorias) {
+		List<Categoria> listaCategorias = new ArrayList<Categoria>();
+		for (int i : idCategorias) {
+			Categoria categoria = categoriaService.find(i);
+			listaCategorias.add(categoria);
 		}
+		
+		veiculo.setCategorias(listaCategorias);
+		return veiculo;
 	}
 }
