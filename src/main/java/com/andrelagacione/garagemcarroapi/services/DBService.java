@@ -10,11 +10,13 @@ import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
 import com.andrelagacione.garagemcarroapi.domain.Estado;
 import com.andrelagacione.garagemcarroapi.domain.Marca;
+import com.andrelagacione.garagemcarroapi.domain.Menu;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 import com.andrelagacione.garagemcarroapi.repositories.CategoriaRespository;
 import com.andrelagacione.garagemcarroapi.repositories.CidadeRepository;
 import com.andrelagacione.garagemcarroapi.repositories.EstadoRepository;
 import com.andrelagacione.garagemcarroapi.repositories.MarcaRepository;
+import com.andrelagacione.garagemcarroapi.repositories.MenuRepository;
 import com.andrelagacione.garagemcarroapi.repositories.VeiculoRepository;
 
 @Service
@@ -33,6 +35,9 @@ public class DBService {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private MenuRepository menuRepository;
 	
 	public void instantiateTestDataBase() throws ParseException {
 		Categoria categoria1 = new Categoria(null, "Carros");
@@ -66,6 +71,14 @@ public class DBService {
 		
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3, cidade4));
+		
+		Menu menu1 = new Menu(null, "Categorias", "/categorias", "fas fa-archive");
+		Menu menu2 = new Menu(null, "Cidades", "/cidades", "fas fa-city");
+		Menu menu3 = new Menu(null, "Estados", "/estados", "fas fa-map");
+		Menu menu4 = new Menu(null, "Marcas", "/marcas", "fas fa-copyright");
+		Menu menu5 = new Menu(null, "Veículos", "/veiculos", "fas fa-car");
+		
+		menuRepository.saveAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5));
 		
 	}
 }

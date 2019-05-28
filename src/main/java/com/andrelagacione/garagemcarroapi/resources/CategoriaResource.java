@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.andrelagacione.garagemcarroapi.services.CategoriaService;
 import javassist.tools.rmi.ObjectNotFoundException;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
 	@Autowired
