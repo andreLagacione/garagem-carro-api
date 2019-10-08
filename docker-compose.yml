@@ -1,0 +1,11 @@
+version : '3.3'
+
+services:
+  mysqlSerever:
+      image: mysql
+      hostname: mysqlServer
+      container_name: mysqlServer
+      environment:
+          MYSQL_ROOT_PASSWORD: root
+      ports:
+        - "3306:3306"
