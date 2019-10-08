@@ -2,20 +2,24 @@ package com.andrelagacione.garagemcarroapi.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "menu")
 public class Menu implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	@Column(name = "nome")
 	private String nome;
+
+	@Column(name = "url")
 	private String url;
+
+	@Column(name = "icone")
 	private String icone;
 	
 	public Menu() {}
