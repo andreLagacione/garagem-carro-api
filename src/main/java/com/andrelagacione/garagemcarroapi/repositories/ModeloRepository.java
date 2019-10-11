@@ -1,4 +1,7 @@
 package com.andrelagacione.garagemcarroapi.repositories;
 
-public class ModeloRepository {
+import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ModeloRepository extends JpaRepository<Modelo, Integer> {
 }
