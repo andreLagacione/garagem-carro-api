@@ -15,11 +15,16 @@ public class Modelo implements Serializable {
     @Column(name = "nome", nullable = false)
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "marca_id")
+    private Marca marca;
+
     public Modelo() {}
 
-    public Modelo(Integer id, String nome) {
+    public Modelo(Integer id, String nome, Marca marca) {
         this.id = id;
         this.nome = nome;
+        this.marca = marca;
     }
 
     public Integer getId() {
@@ -36,5 +41,13 @@ public class Modelo implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 }

@@ -19,13 +19,18 @@ public class ModeloService {
     @Autowired
     private ModeloRepository modeloRepository;
 
-    public List<Modelo> findAll() {
-        return this.modeloRepository.findAll();
+    public List<Modelo> findByMarca(Integer idMarca) {
+        return this.modeloRepository.findByMarca(idMarca);
     }
 
-    public Page<Modelo> findPage(Integer page, Integer size, String direction, String orderBy) {
-        PageRequest request = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
-        return this.modeloRepository.findAll(request);
+    public Page<Modelo> findPage(Integer page, Integer size, String direction, String orderBy, Integer idMarca) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
+
+        if (idMarca != null) {
+            return this.modeloRepository.findByMarcaPageable(idMarca, pageRequest);
+        }
+
+        return this.modeloRepository.findAll(pageRequest);
     }
 
     public Modelo find(Integer id) throws ObjectNotFoundException {
@@ -55,10 +60,11 @@ public class ModeloService {
     }
 
     public Modelo fromDto(ModeloDTO modeloDTO) {
-        return new Modelo(modeloDTO.getId(), modeloDTO.getNome());
+        return new Modelo(modeloDTO.getId(), modeloDTO.getNome(), modeloDTO.getMarca());
     }
 
     private void updateData(Modelo newModelo, Modelo modelo) {
         newModelo.setNome(modelo.getNome());
+        newModelo.setMarca(modelo.getMarca());
     }
 }

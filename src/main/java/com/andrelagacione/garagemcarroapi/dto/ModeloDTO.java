@@ -1,9 +1,12 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
+import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Modelo;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class ModeloDTO implements Serializable {
@@ -15,11 +18,16 @@ public class ModeloDTO implements Serializable {
     @Length(min = 3, max = 30, message = "O tamanho deve ser entre 3 e 30 caractéres")
     private String nome;
 
+    @NotNull(message = "Selecione uma marca")
+    private Integer idMarca;
+    private Marca marca;
+
     public ModeloDTO() {}
 
     public ModeloDTO(Modelo modelo) {
         this.id = modelo.getId();
         this.nome = modelo.getNome();
+        this.marca = modelo.getMarca();
     }
 
     public Integer getId() {
@@ -36,5 +44,21 @@ public class ModeloDTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(Integer idMarca) {
+        this.idMarca = idMarca;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 }

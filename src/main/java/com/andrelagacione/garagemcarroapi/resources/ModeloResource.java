@@ -2,8 +2,8 @@ package com.andrelagacione.garagemcarroapi.resources;
 
 import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Modelo;
-import com.andrelagacione.garagemcarroapi.dto.MarcaDTO;
 import com.andrelagacione.garagemcarroapi.dto.ModeloDTO;
+import com.andrelagacione.garagemcarroapi.services.MarcaService;
 import com.andrelagacione.garagemcarroapi.services.ModeloService;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +24,27 @@ public class ModeloResource {
     @Autowired
     private ModeloService modeloService;
 
+    @Autowired
+    private MarcaService marcaService;
+
     @RequestMapping(value="/lista", method= RequestMethod.GET)
-    public ResponseEntity<List<ModeloDTO>> findAll() {
-        List<Modelo> modelos = this.modeloService.findAll();
+    public ResponseEntity<List<ModeloDTO>> findAll(
+            @RequestParam("idMarca") Integer idMarca
+    ) {
+        List<Modelo> modelos = this.modeloService.findByMarca(idMarca);
         List<ModeloDTO> modeloDTO = modelos.stream().map(obj -> new ModeloDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(modeloDTO);
     }
 
     @RequestMapping(method=RequestMethod.GET)
     public ResponseEntity<Page<ModeloDTO>> findPage(
+            @RequestParam(value="idMarca") Integer idMarca,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="25") Integer size,
             @RequestParam(value="ordrBy", defaultValue="nome") String orderBy,
             @RequestParam(value="direction", defaultValue="ASC") String direction
     ) {
-        Page<Modelo> modelos = this.modeloService.findPage(page, size, direction, orderBy);
+        Page<Modelo> modelos = this.modeloService.findPage(page, size, direction, orderBy, idMarca);
         Page<ModeloDTO> modeloDTO = modelos.map(obj -> new ModeloDTO(obj));
         return ResponseEntity.ok().body(modeloDTO);
     }
@@ -52,6 +58,8 @@ public class ModeloResource {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody ModeloDTO modeloDTO) {
         Modelo modelo = this.modeloService.fromDto(modeloDTO);
+        Marca marca = this.marcaService.find(modeloDTO.getIdMarca());
+        modelo.setMarca(marca);
         modelo = this.modeloService.insert(modelo);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(modelo.getId()).toUri();
@@ -65,6 +73,8 @@ public class ModeloResource {
     ) throws ObjectNotFoundException {
         Modelo modelo = this.modeloService.fromDto(modeloDTO);
         modelo.setId(id);
+        Marca marca = this.marcaService.find(modeloDTO.getIdMarca());
+        modelo.setMarca(marca);
         modelo = this.modeloService.update(modelo);
         return ResponseEntity.noContent().build();
     }
