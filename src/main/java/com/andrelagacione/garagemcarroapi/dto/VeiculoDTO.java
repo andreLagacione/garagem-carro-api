@@ -1,27 +1,44 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
+import com.andrelagacione.garagemcarroapi.domain.Categoria;
+import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import com.andrelagacione.garagemcarroapi.domain.Veiculo;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
-
-import com.andrelagacione.garagemcarroapi.domain.Categoria;
-import com.andrelagacione.garagemcarroapi.domain.Marca;
-import com.andrelagacione.garagemcarroapi.domain.Veiculo;
 
 public class VeiculoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
+
+	@NotEmpty(message = "Informe um valor")
 	private Double valor;
+
+	@NotEmpty(message = "Informe uma cor")
+	@Size(min = 3, max = 30, message = "O tamanho tem que estar entre 3 e 30 caractéres")
 	private String cor;
 	private Double cavalos;
 	private Double cilindradas;
 	private Integer portas;
-	private String modelo;
+
+	@NotEmpty(message = "Informe uma descrição")
+	@Size(min = 3, max = 500, message = "O tamanho tem que estar entre 3 e 500 caractéres")
 	private String descricao;
+
 	private List<Categoria> categorias;
-	private Marca marca;
+
+	@NotEmpty(message = "Informe pelo menos uma categoria")
+	@Length(min = 1)
 	private List<Integer> idCategorias;
-	private Integer idMarca;
+
+	@NotNull(message = "Selecione o modelo.")
+	private Integer idModelo;
+	private Modelo modelo;
 
 	public VeiculoDTO() {}
 	
@@ -32,10 +49,9 @@ public class VeiculoDTO implements Serializable {
 		cavalos = veiculo.getCavalos();
 		cilindradas = veiculo.getCilindradas();
 		portas = veiculo.getPortas();
-		modelo = veiculo.getModelo();
 		descricao = veiculo.getDescricao();
-		marca = veiculo.getMarca();
 		categorias = veiculo.getCategorias();
+		modelo = veiculo.getModelo();
 	}
 
 	public Integer getId() {
@@ -85,14 +101,6 @@ public class VeiculoDTO implements Serializable {
 	public void setPortas(Integer portas) {
 		this.portas = portas;
 	}
-	
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
 
 	public String getDescricao() {
 		return descricao;
@@ -109,14 +117,6 @@ public class VeiculoDTO implements Serializable {
 	public void setCategorias(List<Categoria> categoria) {
 		this.categorias = categoria;
 	}
-
-	public Marca getMarca() {
-		return marca;
-	}
-
-	public void setMarca(Marca marcas) {
-		this.marca = marcas;
-	}
 	
 	public List<Integer> getIdCategorias() {
 		return idCategorias;
@@ -126,12 +126,19 @@ public class VeiculoDTO implements Serializable {
 		this.idCategorias = idCategorias;
 	}
 
-	public Integer getIdMarca() {
-		return idMarca;
+	public Integer getIdModelo() {
+		return idModelo;
 	}
 
-	public void setIdMarca(Integer idMarca) {
-		this.idMarca = idMarca;
+	public void setIdModelo(Integer idModelo) {
+		this.idModelo = idModelo;
 	}
 
+	public Modelo getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
+	}
 }

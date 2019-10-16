@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import com.andrelagacione.garagemcarroapi.services.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class VeiculoResource {
 	private VeiculoService veiculoService;
 	
 	@Autowired
-	private MarcaService marcaService;
+	private ModeloService modeloService;
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<VeiculoDTO>> findAll() {
@@ -62,10 +64,18 @@ public class VeiculoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) {
+	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) throws Error {
+		 if (veiculoDTO.getIdCategorias().size() == 0) {
+		 	return ResponseEntity.badRequest().build();
+		 }
+
+		 if (veiculoDTO.getModelo() == null) {
+			 return ResponseEntity.badRequest().build();
+		 }
+
 		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
-		Marca marca = marcaService.find(veiculoDTO.getIdMarca());
-		veiculo.setMarca(marca);
+		Modelo modelo = modeloService.find(veiculoDTO.getIdModelo());
+		veiculo.setModelo(modelo);
 		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
 		veiculo = veiculoService.insert(veiculo);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -80,8 +90,8 @@ public class VeiculoResource {
 	) throws ObjectNotFoundException {
 		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
 		veiculo.setId(id);
-		Marca marca = marcaService.find(veiculoDTO.getIdMarca());
-		veiculo.setMarca(marca);
+		Modelo modelo = modeloService.find(veiculoDTO.getIdModelo());
+		veiculo.setModelo(modelo);
 		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
 		veiculo = veiculoService.update(veiculo);
 		return ResponseEntity.noContent().build();

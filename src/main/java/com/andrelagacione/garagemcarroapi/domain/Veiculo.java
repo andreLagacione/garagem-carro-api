@@ -1,12 +1,11 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "veiculo")
@@ -32,15 +31,12 @@ public class Veiculo implements Serializable {
 	@Column(name = "portas")
 	private Integer portas;
 
-	@Column(name = "modelo")
-	private String modelo;
-
 	@Column(name = "descricao")
 	private String descricao;
-	
+
 	@ManyToOne
-	@JoinColumn(name="marca_id")
-	private Marca marca;
+	@JoinColumn(name="modelo_id")
+	private Modelo modelo;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -53,7 +49,7 @@ public class Veiculo implements Serializable {
 	
 	public Veiculo() {}
 
-	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String modelo, String descricao) {
+	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String descricao, List<Categoria> categorias, Modelo modelo) {
 		super();
 		this.id = id;
 		this.valor = valor;
@@ -61,8 +57,9 @@ public class Veiculo implements Serializable {
 		this.cavalos = cavalos;
 		this.cilindradas = cilindradas;
 		this.portas = portas;
-		this.modelo = modelo;
 		this.descricao = descricao;
+		this.categorias = categorias;
+		this.modelo = modelo;
 	}
 
 	public Integer getId() {
@@ -113,14 +110,6 @@ public class Veiculo implements Serializable {
 		this.portas = portas;
 	}
 
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -136,13 +125,12 @@ public class Veiculo implements Serializable {
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-	
-	public Marca getMarca() {
-		return marca;
+
+	public Modelo getModelo() {
+		return modelo;
 	}
 
-	public void setMarca(Marca marca) {
-		this.marca = marca;
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
 	}
-
 }

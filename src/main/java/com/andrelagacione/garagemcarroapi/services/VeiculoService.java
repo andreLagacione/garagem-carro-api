@@ -70,7 +70,17 @@ public class VeiculoService {
 	}
 	
 	public Veiculo fromDto(VeiculoDTO veiculoDTO) {
-		return new Veiculo(null, veiculoDTO.getValor(), veiculoDTO.getCor(), veiculoDTO.getCavalos(), veiculoDTO.getCilindradas(), veiculoDTO.getPortas(), veiculoDTO.getModelo(), veiculoDTO.getDescricao());
+		return new Veiculo(
+				veiculoDTO.getId(),
+				veiculoDTO.getValor(),
+				veiculoDTO.getCor(),
+				veiculoDTO.getCavalos(),
+				veiculoDTO.getCilindradas(),
+				veiculoDTO.getPortas(),
+				veiculoDTO.getDescricao(),
+				veiculoDTO.getCategorias(),
+				veiculoDTO.getModelo()
+		);
 	}
 	
 	public void updateData(Veiculo newVeiculo, Veiculo veiculo) {
@@ -81,7 +91,6 @@ public class VeiculoService {
 		newVeiculo.setPortas(veiculo.getPortas());
 		newVeiculo.setModelo(veiculo.getModelo());
 		newVeiculo.setDescricao(veiculo.getDescricao());
-		newVeiculo.setMarca(veiculo.getMarca());
 		newVeiculo.setCategorias(veiculo.getCategorias());
 	}
 	
