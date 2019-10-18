@@ -65,14 +65,6 @@ public class VeiculoResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) throws Error {
-		 if (veiculoDTO.getIdCategorias().size() == 0) {
-		 	return ResponseEntity.badRequest().build();
-		 }
-
-		 if (veiculoDTO.getModelo() == null) {
-			 return ResponseEntity.badRequest().build();
-		 }
-
 		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
 		Modelo modelo = modeloService.find(veiculoDTO.getIdModelo());
 		veiculo.setModelo(modelo);
