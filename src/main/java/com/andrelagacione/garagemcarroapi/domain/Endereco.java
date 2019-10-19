@@ -2,6 +2,7 @@ package com.andrelagacione.garagemcarroapi.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "endereco")
@@ -27,18 +28,28 @@ public class Endereco implements Serializable {
     @Column(name = "cep")
     private String cep;
 
+    @Column(name = "apelido")
+    private String apelido;
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    private Pessoa pessoa;
+
     @ManyToOne
     @JoinColumn(name="cidade_id")
     private Cidade cidade;
 
     public Endereco() {}
 
-    public Endereco(String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, String apelido, Pessoa pessoa, Cidade cidade) {
+        this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.cep = cep;
+        this.apelido = apelido;
+        this.pessoa = pessoa;
         this.cidade = cidade;
     }
 
@@ -88,6 +99,22 @@ public class Endereco implements Serializable {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public Cidade getCidade() {

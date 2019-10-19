@@ -1,48 +1,51 @@
-package com.andrelagacione.garagemcarroapi.domain;
+package com.andrelagacione.garagemcarroapi.dto;
 
+import com.andrelagacione.garagemcarroapi.domain.Endereco;
+import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import com.andrelagacione.garagemcarroapi.enums.TipoPessoa;
+import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "pessoa")
-public class Pessoa implements Serializable {
+public class PessoaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=50, message="O tamanho deve ser entre 3 e 50 caractéres.")
     private String nome;
 
-    @Column(name = "email")
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=50, message="O tamanho deve ser entre 3 e 50 caractéres.")
+    @Email(message = "E-mail inválido.")
     private String email;
 
-    @Column(name = "cpfCnpj")
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=20, message="O tamanho deve ser entre 3 e 20 caractéres.")
     private String cpfCnpj;
 
-    @Column(name = "telefone")
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=20, message="O tamanho deve ser entre 3 e 20 caractéres.")
     private String telefone;
 
-    @OneToMany(mappedBy = "pessoa")
     private List<Endereco> listaEnderecos;
 
-    @Column(name = "tipo_pessoa")
+    @NotNull(message="Informe o tipo da pessoa.")
     private TipoPessoa tipoPessoa;
 
-    public Pessoa() {}
-
-    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, List<Endereco> listaEnderecos, TipoPessoa tipoPessoa) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.cpfCnpj = cpfCnpj;
-        this.telefone = telefone;
-        this.listaEnderecos = listaEnderecos;
-        this.tipoPessoa = tipoPessoa;
+    public PessoaDTO(Pessoa pessoa) {
+        this.id = pessoa.getId();
+        this.nome = pessoa.getNome();
+        this.email = pessoa.getEmail();
+        this.cpfCnpj = pessoa.getCpfCnpj();
+        this.telefone = pessoa.getTelefone();
+        this.listaEnderecos = pessoa.getListaEnderecos();
+        this.tipoPessoa = pessoa.getTipoPessoa();
     }
 
     public Integer getId() {

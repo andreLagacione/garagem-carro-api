@@ -1,32 +1,59 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
+import com.andrelagacione.garagemcarroapi.domain.Endereco;
+import com.andrelagacione.garagemcarroapi.domain.Pessoa;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
 
 public class EnderecoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=100, message="O tamanho deve ser entre 3 e 100 caractéres.")
     private String logradouro;
+
+    @NotEmpty(message="Preenchimento obrigatório.")
     private String numero;
+
     private String complemento;
+
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=30, message="O tamanho deve ser entre 3 e 30 caractéres.")
     private String bairro;
+
+    @NotEmpty(message="Preenchimento obrigatório.")
     private String cep;
+
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(min=3, max=50, message="O tamanho deve ser entre 3 e 50 caractéres.")
+    private String apelido;
+
+    private Pessoa pessoa;
+    private Integer idPessoa;
+
     private Cidade cidade;
+
+    @NotEmpty(message="Informe a cidade.")
     private Integer idCidade;
 
     public EnderecoDTO() {}
 
-    public EnderecoDTO(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Integer idCidade) {
-        this.id = id;
-        this.logradouro = logradouro;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.cep = cep;
-        this.cidade = cidade;
-        this.idCidade = idCidade;
+    public EnderecoDTO(Endereco endereco) {
+        this.id = endereco.getId();
+        this.logradouro = endereco.getLogradouro();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.cep = endereco.getCep();
+        this.apelido = endereco.getApelido();
+        this.pessoa = endereco.getPessoa();
+        this.cidade = endereco.getCidade();
     }
 
     public Integer getId() {
@@ -75,6 +102,30 @@ public class EnderecoDTO implements Serializable {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public Integer getIdPessoa() {
+        return idPessoa;
+    }
+
+    public void setIdPessoa(Integer idPessoa) {
+        this.idPessoa = idPessoa;
     }
 
     public Cidade getCidade() {
