@@ -1,6 +1,5 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import com.andrelagacione.garagemcarroapi.domain.TipoPessoa;
 
 import java.io.Serializable;
