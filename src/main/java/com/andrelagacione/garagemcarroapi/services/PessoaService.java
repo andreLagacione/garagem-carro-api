@@ -23,9 +23,9 @@ public class PessoaService {
         return pessoaRepository.findAll();
     }
 
-    public Page<Pessoa> findPage(Integer page, Integer size, String orderBy, String direction, Integer tipoPessoa) {
+    public Page<Pessoa> findPage(Integer page, Integer size, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
-        return pessoaRepository.findPessoasPage(tipoPessoa, pageRequest);
+        return pessoaRepository.findAll(pageRequest);
     }
 
     public Pessoa find(Integer id) throws ObjectNotFoundException {
@@ -61,7 +61,8 @@ public class PessoaService {
                 pessoaDTO.getEmail(),
                 pessoaDTO.getCpfCnpj(),
                 pessoaDTO.getTelefone(),
-                pessoaDTO.getListaEnderecos()
+                pessoaDTO.getListaEnderecos(),
+                pessoaDTO.getTipoPessoa()
         );
     }
 
@@ -72,5 +73,6 @@ public class PessoaService {
         newPessoa.setCpfCnpj(pessoa.getCpfCnpj());
         newPessoa.setTelefone(pessoa.getTelefone());
         newPessoa.setListaEnderecos(pessoa.getListaEnderecos());
+        newPessoa.setTipoPessoa(pessoa.getTipoPessoa());
     }
 }
