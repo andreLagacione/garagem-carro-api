@@ -28,15 +28,19 @@ public class Pessoa implements Serializable {
     @OneToMany(mappedBy = "pessoa")
     private List<Endereco> listaEnderecos;
 
+    @Column(name = "tipo_pessoa")
+    private Integer tipoPessoa;
+
     public Pessoa() {}
 
-    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, List<Endereco> listaEnderecos) {
+    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, List<Endereco> listaEnderecos, Integer tipoPessoa) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfCnpj = cpfCnpj;
         this.telefone = telefone;
         this.listaEnderecos = listaEnderecos;
+        this.tipoPessoa = tipoPessoa;
     }
 
     public Integer getId() {
@@ -85,5 +89,13 @@ public class Pessoa implements Serializable {
 
     public void setListaEnderecos(List<Endereco> listaEnderecos) {
         this.listaEnderecos = listaEnderecos;
+    }
+
+    public Integer getTipoPessoa() {
+        return tipoPessoa;
+    }
+
+    public void setTipoPessoa(Integer tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
     }
 }

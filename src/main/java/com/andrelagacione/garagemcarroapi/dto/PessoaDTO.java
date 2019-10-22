@@ -44,6 +44,7 @@ public class PessoaDTO implements Serializable {
         this.cpfCnpj = pessoa.getCpfCnpj();
         this.telefone = pessoa.getTelefone();
         this.listaEnderecos = pessoa.getListaEnderecos();
+        this.tipoPessoa = pessoa.getTipoPessoa();
     }
 
     public Integer getId() {
