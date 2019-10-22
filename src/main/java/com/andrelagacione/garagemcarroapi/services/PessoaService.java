@@ -2,7 +2,6 @@ package com.andrelagacione.garagemcarroapi.services;
 
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import com.andrelagacione.garagemcarroapi.dto.PessoaDTO;
-import com.andrelagacione.garagemcarroapi.enums.TipoPessoa;
 import com.andrelagacione.garagemcarroapi.repositories.PessoaRepository;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class PessoaService {
         return pessoaRepository.findAll();
     }
 
-    public Page<Pessoa> findPage(Integer page, Integer size, String orderBy, String direction, TipoPessoa tipoPessoa) {
+    public Page<Pessoa> findPage(Integer page, Integer size, String orderBy, String direction, Integer tipoPessoa) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.valueOf(direction), orderBy);
         return pessoaRepository.findPessoasPage(tipoPessoa, pageRequest);
     }
@@ -62,8 +61,7 @@ public class PessoaService {
                 pessoaDTO.getEmail(),
                 pessoaDTO.getCpfCnpj(),
                 pessoaDTO.getTelefone(),
-                pessoaDTO.getListaEnderecos(),
-                pessoaDTO.getTipoPessoa()
+                pessoaDTO.getListaEnderecos()
         );
     }
 
@@ -74,6 +72,5 @@ public class PessoaService {
         newPessoa.setCpfCnpj(pessoa.getCpfCnpj());
         newPessoa.setTelefone(pessoa.getTelefone());
         newPessoa.setListaEnderecos(pessoa.getListaEnderecos());
-        newPessoa.setTipoPessoa(pessoa.getTipoPessoa());
     }
 }

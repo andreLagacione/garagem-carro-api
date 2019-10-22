@@ -2,7 +2,6 @@ package com.andrelagacione.garagemcarroapi.dto;
 
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
-import com.andrelagacione.garagemcarroapi.enums.TipoPessoa;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -36,7 +35,7 @@ public class PessoaDTO implements Serializable {
     private List<Endereco> listaEnderecos;
 
     @NotNull(message="Informe o tipo da pessoa.")
-    private TipoPessoa tipoPessoa;
+    private Integer tipoPessoa;
 
     public PessoaDTO(Pessoa pessoa) {
         this.id = pessoa.getId();
@@ -45,7 +44,6 @@ public class PessoaDTO implements Serializable {
         this.cpfCnpj = pessoa.getCpfCnpj();
         this.telefone = pessoa.getTelefone();
         this.listaEnderecos = pessoa.getListaEnderecos();
-        this.tipoPessoa = pessoa.getTipoPessoa();
     }
 
     public Integer getId() {
@@ -96,11 +94,11 @@ public class PessoaDTO implements Serializable {
         this.listaEnderecos = listaEnderecos;
     }
 
-    public TipoPessoa getTipoPessoa() {
+    public Integer getTipoPessoa() {
         return tipoPessoa;
     }
 
-    public void setTipoPessoa(TipoPessoa tipoPessoa) {
+    public void setTipoPessoa(Integer tipoPessoa) {
         this.tipoPessoa = tipoPessoa;
     }
 }

@@ -3,7 +3,6 @@ package com.andrelagacione.garagemcarroapi.resources;
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import com.andrelagacione.garagemcarroapi.dto.PessoaDTO;
-import com.andrelagacione.garagemcarroapi.enums.TipoPessoa;
 import com.andrelagacione.garagemcarroapi.services.EnderecoService;
 import com.andrelagacione.garagemcarroapi.services.PessoaService;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
@@ -29,7 +28,7 @@ public class PessoaResource {
 
     @RequestMapping(method= RequestMethod.GET)
     public ResponseEntity<Page<PessoaDTO>> findPage(
-            @RequestParam(value="tipoPessoa")TipoPessoa tipoPessoa,
+            @RequestParam(value="tipoPessoa")Integer tipoPessoa,
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="25") Integer size,
             @RequestParam(value="orderBy", defaultValue="nome") String orderBy,

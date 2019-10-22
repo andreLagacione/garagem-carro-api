@@ -1,7 +1,5 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
-import com.andrelagacione.garagemcarroapi.enums.TipoPessoa;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -30,19 +28,15 @@ public class Pessoa implements Serializable {
     @OneToMany(mappedBy = "pessoa")
     private List<Endereco> listaEnderecos;
 
-    @Column(name = "tipo_pessoa")
-    private TipoPessoa tipoPessoa;
-
     public Pessoa() {}
 
-    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, List<Endereco> listaEnderecos, TipoPessoa tipoPessoa) {
+    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, List<Endereco> listaEnderecos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfCnpj = cpfCnpj;
         this.telefone = telefone;
         this.listaEnderecos = listaEnderecos;
-        this.tipoPessoa = tipoPessoa;
     }
 
     public Integer getId() {
@@ -91,13 +85,5 @@ public class Pessoa implements Serializable {
 
     public void setListaEnderecos(List<Endereco> listaEnderecos) {
         this.listaEnderecos = listaEnderecos;
-    }
-
-    public TipoPessoa getTipoPessoa() {
-        return tipoPessoa;
-    }
-
-    public void setTipoPessoa(TipoPessoa tipoPessoa) {
-        this.tipoPessoa = tipoPessoa;
     }
 }
