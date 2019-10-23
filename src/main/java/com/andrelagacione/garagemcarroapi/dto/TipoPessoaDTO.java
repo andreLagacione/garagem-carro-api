@@ -10,6 +10,8 @@ public class TipoPessoaDTO implements Serializable {
     private Integer id;
     private String descricao;
 
+    public TipoPessoaDTO() {}
+
     public TipoPessoaDTO(TipoPessoa tipoPessoa) {
         this.id = tipoPessoa.getId();
         this.descricao = tipoPessoa.getDescricao();

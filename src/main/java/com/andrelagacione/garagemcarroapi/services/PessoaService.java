@@ -61,7 +61,6 @@ public class PessoaService {
                 pessoaDTO.getEmail(),
                 pessoaDTO.getCpfCnpj(),
                 pessoaDTO.getTelefone(),
-                pessoaDTO.getListaEnderecos(),
                 pessoaDTO.getTipoPessoa()
         );
     }
@@ -72,7 +71,6 @@ public class PessoaService {
         newPessoa.setEmail(pessoa.getEmail());
         newPessoa.setCpfCnpj(pessoa.getCpfCnpj());
         newPessoa.setTelefone(pessoa.getTelefone());
-        newPessoa.setListaEnderecos(pessoa.getListaEnderecos());
         newPessoa.setTipoPessoa(pessoa.getTipoPessoa());
     }
 }

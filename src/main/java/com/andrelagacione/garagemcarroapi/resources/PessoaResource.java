@@ -47,8 +47,6 @@ public class PessoaResource {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody PessoaDTO pessoaDTO) {
         Pessoa pessoa = pessoaService.fromDto(pessoaDTO);
-        List<Endereco> listaEndereco = enderecoService.findAll(pessoaDTO.getId());
-        pessoa.setListaEnderecos(listaEndereco);
         pessoa = pessoaService.insert(pessoa);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(pessoa.getId()).toUri();
@@ -62,8 +60,6 @@ public class PessoaResource {
     ) throws ObjectNotFoundException {
         Pessoa pessoa = pessoaService.fromDto(pessoaDTO);
         pessoa.setId(id);
-        List<Endereco> listaEndereco = enderecoService.findAll(pessoa.getId());
-        pessoa.setListaEnderecos(listaEndereco);
         pessoa = pessoaService.update(pessoa);
         return ResponseEntity.noContent().build();
     }

@@ -22,7 +22,7 @@ public class TipoPessoaResource {
     @Autowired
     private TipoPessoaService tipoPessoaService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/list" ,method = RequestMethod.GET)
     public ResponseEntity<List<TipoPessoaDTO>> findAll() {
         List<TipoPessoa> tipoPessoas = this.tipoPessoaService.findAll();
         List<TipoPessoaDTO> tipoPessoaDTO = tipoPessoas.stream().map(obj -> new TipoPessoaDTO(obj)).collect(Collectors.toList());
@@ -33,11 +33,11 @@ public class TipoPessoaResource {
     public ResponseEntity<Page<TipoPessoaDTO>> findPage(
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="size", defaultValue="25") Integer size,
-            @RequestParam(value="orderBy", defaultValue="nome") String orderBy,
+            @RequestParam(value="orderBy", defaultValue="descricao") String orderBy,
             @RequestParam(value="direction", defaultValue="ASC") String direction
     ) {
-        Page<TipoPessoa> tipoPessoas = this.tipoPessoaService.findPage(page, size, orderBy, direction);
-        Page<TipoPessoaDTO> tipoPessoaDTO = tipoPessoas.map(obj -> new TipoPessoaDTO(obj));
+        Page<TipoPessoa> tipoPessoa = this.tipoPessoaService.findPage(page, size, orderBy, direction);
+        Page<TipoPessoaDTO> tipoPessoaDTO = tipoPessoa.map(obj -> new TipoPessoaDTO(obj));
         return ResponseEntity.ok().body(tipoPessoaDTO);
     }
 

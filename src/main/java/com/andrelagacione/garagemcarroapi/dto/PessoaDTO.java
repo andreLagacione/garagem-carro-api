@@ -1,6 +1,5 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import com.andrelagacione.garagemcarroapi.domain.Endereco;
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,7 +7,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 public class PessoaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -32,10 +30,10 @@ public class PessoaDTO implements Serializable {
     @Length(min=3, max=20, message="O tamanho deve ser entre 3 e 20 caractéres.")
     private String telefone;
 
-    private List<Endereco> listaEnderecos;
-
     @NotNull(message="Informe o tipo da pessoa.")
     private Integer tipoPessoa;
+
+    public PessoaDTO() {}
 
     public PessoaDTO(Pessoa pessoa) {
         this.id = pessoa.getId();
@@ -43,7 +41,6 @@ public class PessoaDTO implements Serializable {
         this.email = pessoa.getEmail();
         this.cpfCnpj = pessoa.getCpfCnpj();
         this.telefone = pessoa.getTelefone();
-        this.listaEnderecos = pessoa.getListaEnderecos();
         this.tipoPessoa = pessoa.getTipoPessoa();
     }
 
@@ -85,14 +82,6 @@ public class PessoaDTO implements Serializable {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public List<Endereco> getListaEnderecos() {
-        return listaEnderecos;
-    }
-
-    public void setListaEnderecos(List<Endereco> listaEnderecos) {
-        this.listaEnderecos = listaEnderecos;
     }
 
     public Integer getTipoPessoa() {
