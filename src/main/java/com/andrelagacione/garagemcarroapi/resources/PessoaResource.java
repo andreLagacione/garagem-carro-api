@@ -2,6 +2,7 @@ package com.andrelagacione.garagemcarroapi.resources;
 
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.dto.PessoaDTO;
 import com.andrelagacione.garagemcarroapi.services.EnderecoService;
 import com.andrelagacione.garagemcarroapi.services.PessoaService;
@@ -45,23 +46,15 @@ public class PessoaResource {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody PessoaDTO pessoaDTO) {
-        Pessoa pessoa = pessoaService.fromDto(pessoaDTO);
-        pessoa = pessoaService.insert(pessoa);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(pessoa.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody PessoaDTO pessoaDTO) {
+        return pessoaService.validarDados(pessoaDTO, true);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> update(
-            @Valid @RequestBody PessoaDTO pessoaDTO,
-            @PathVariable Integer id
+    public ResponseEntity<PadraoMensagemRetorno> update(
+            @Valid @RequestBody PessoaDTO pessoaDTO
     ) throws ObjectNotFoundException {
-        Pessoa pessoa = pessoaService.fromDto(pessoaDTO);
-        pessoa.setId(id);
-        pessoa = pessoaService.update(pessoa);
-        return ResponseEntity.noContent().build();
+        return pessoaService.validarDados(pessoaDTO, false);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)

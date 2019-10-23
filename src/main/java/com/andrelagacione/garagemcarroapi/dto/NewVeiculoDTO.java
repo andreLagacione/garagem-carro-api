@@ -13,7 +13,7 @@ import com.andrelagacione.garagemcarroapi.domain.Marca;
 public class NewVeiculoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-private Integer id;
+	private Integer id;
 	
 	@NotEmpty(message = "O valor precisa ser informado.")
 	private Double valor;

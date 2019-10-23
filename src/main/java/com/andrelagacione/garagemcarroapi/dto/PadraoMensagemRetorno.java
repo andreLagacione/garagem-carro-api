@@ -1,4 +1,35 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-public class PadraoMensagemRetorno {
+import org.springframework.http.HttpStatus;
+
+import java.io.Serializable;
+
+public class PadraoMensagemRetorno implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private HttpStatus httpStatus;
+    private String mensagem;
+
+    public PadraoMensagemRetorno() {}
+
+    public PadraoMensagemRetorno(HttpStatus httpStatus, String mensagem) {
+        this.httpStatus = httpStatus;
+        this.mensagem = mensagem;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
 }

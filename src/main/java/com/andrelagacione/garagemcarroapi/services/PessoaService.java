@@ -1,16 +1,23 @@
 package com.andrelagacione.garagemcarroapi.services;
 
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
+import com.andrelagacione.garagemcarroapi.domain.TipoPessoa;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.dto.PessoaDTO;
 import com.andrelagacione.garagemcarroapi.repositories.PessoaRepository;
+import com.andrelagacione.garagemcarroapi.repositories.TipoPessoaRepository;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +25,9 @@ import java.util.Optional;
 public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
+
+    @Autowired
+    private TipoPessoaRepository tipoPessoaRepository;
 
     public List<Pessoa> findAll() {
         return pessoaRepository.findAll();
@@ -72,5 +82,37 @@ public class PessoaService {
         newPessoa.setCpfCnpj(pessoa.getCpfCnpj());
         newPessoa.setTelefone(pessoa.getTelefone());
         newPessoa.setTipoPessoa(pessoa.getTipoPessoa());
+    }
+
+    public ResponseEntity<PadraoMensagemRetorno> validarDados(PessoaDTO pessoaDTO, Boolean adicionar) {
+        Optional<TipoPessoa> tipoPessoa = this.tipoPessoaRepository.findById(pessoaDTO.getTipoPessoa());
+
+        if (!tipoPessoa.isPresent()) {
+            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, "Tipo de pessoa não encontrado!");
+            return ResponseEntity.badRequest().body(mensagemRetorno);
+        }
+
+        Pessoa pessoa = this.fromDto(pessoaDTO);
+
+        if (adicionar == true) {
+            return this.adicionarPessoa(pessoa);
+        }
+
+        return this.atualizarPessoa(pessoa);
+    }
+
+    private ResponseEntity<PadraoMensagemRetorno> adicionarPessoa(Pessoa pessoa) {
+        this.insert(pessoa);
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, "Pessoa adicionada com sucesso!");
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(pessoa.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(mensagemRetorno);
+    }
+
+    private ResponseEntity<PadraoMensagemRetorno> atualizarPessoa(Pessoa pessoa) {
+        this.update(pessoa);
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, "Pessoa editada com sucesso!");
+        return ResponseEntity.ok(mensagemRetorno);
     }
 }
