@@ -95,10 +95,22 @@ public class PessoaService {
         Pessoa pessoa = this.fromDto(pessoaDTO);
 
         if (adicionar == true) {
-            return this.adicionarPessoa(pessoa);
+            return this.validarCpfCnpj(pessoa);
         }
 
         return this.atualizarPessoa(pessoa);
+    }
+
+    private ResponseEntity<PadraoMensagemRetorno> validarCpfCnpj(Pessoa pessoa) {
+        Boolean cpfCnpjExists = this.pessoaRepository.existsCpfCnpj(pessoa.getCpfCnpj());
+
+        if (cpfCnpjExists) {
+            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CONFLICT, "Já existe uma pessoa com esse CPF/CNPJ cadastrado na base!");
+            return ResponseEntity.badRequest().body(mensagemRetorno);
+        }
+
+        return this.adicionarPessoa(pessoa);
+
     }
 
     private ResponseEntity<PadraoMensagemRetorno> adicionarPessoa(Pessoa pessoa) {
