@@ -88,7 +88,7 @@ public class PessoaService {
         Optional<TipoPessoa> tipoPessoa = this.tipoPessoaRepository.findById(pessoaDTO.getTipoPessoa());
 
         if (!tipoPessoa.isPresent()) {
-            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, "Tipo de pessoa não encontrado!");
+            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, HttpStatus.valueOf("NOT_FOUND").value(), "Tipo de pessoa não encontrado!");
             return ResponseEntity.badRequest().body(mensagemRetorno);
         }
 
@@ -105,7 +105,7 @@ public class PessoaService {
         Boolean cpfCnpjExists = this.pessoaRepository.existsCpfCnpj(pessoa.getCpfCnpj());
 
         if (cpfCnpjExists) {
-            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CONFLICT, "Já existe uma pessoa com esse CPF/CNPJ cadastrado na base!");
+            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CONFLICT, HttpStatus.valueOf("CONFLICT").value(), "Já existe uma pessoa com esse CPF/CNPJ cadastrado na base!");
             return ResponseEntity.badRequest().body(mensagemRetorno);
         }
 
@@ -115,7 +115,7 @@ public class PessoaService {
 
     private ResponseEntity<PadraoMensagemRetorno> adicionarPessoa(Pessoa pessoa) {
         this.insert(pessoa);
-        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, "Pessoa adicionada com sucesso!");
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Pessoa adicionada com sucesso!");
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(pessoa.getId()).toUri();
 
@@ -124,7 +124,7 @@ public class PessoaService {
 
     private ResponseEntity<PadraoMensagemRetorno> atualizarPessoa(Pessoa pessoa) {
         this.update(pessoa);
-        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, "Pessoa editada com sucesso!");
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Pessoa editada com sucesso!");
         return ResponseEntity.ok(mensagemRetorno);
     }
 }

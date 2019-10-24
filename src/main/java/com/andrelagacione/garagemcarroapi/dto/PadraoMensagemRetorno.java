@@ -8,12 +8,14 @@ public class PadraoMensagemRetorno implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private HttpStatus httpStatus;
+    private Integer httpStatusCode;
     private String mensagem;
 
     public PadraoMensagemRetorno() {}
 
-    public PadraoMensagemRetorno(HttpStatus httpStatus, String mensagem) {
+    public PadraoMensagemRetorno(HttpStatus httpStatus, Integer httpStatusCode, String mensagem) {
         this.httpStatus = httpStatus;
+        this.httpStatusCode = httpStatusCode;
         this.mensagem = mensagem;
     }
 
@@ -23,6 +25,14 @@ public class PadraoMensagemRetorno implements Serializable {
 
     public void setHttpStatus(HttpStatus httpStatus) {
         this.httpStatus = httpStatus;
+    }
+
+    public Integer getHttpStatusCode() {
+        return httpStatusCode;
+    }
+
+    public void setHttpStatusCode(Integer httpStatusCode) {
+        this.httpStatusCode = httpStatusCode;
     }
 
     public String getMensagem() {
