@@ -27,9 +27,9 @@ public class EnderecoResource {
     @Autowired
     private CidadeService cidadeService;
 
-    @RequestMapping(value="/lista", method= RequestMethod.GET)
+    @RequestMapping(value="/lista/{idPessoa}", method= RequestMethod.GET)
     public ResponseEntity<List<EnderecoDTO>> findAll(
-            @RequestParam(value = "idPessoa") Integer idPessoa
+            @PathVariable Integer idPessoa
     ) {
         List<Endereco> enderecos = enderecoService.findAll(idPessoa);
         List<EnderecoDTO> enderecoDTO = enderecos.stream().map(obj -> new EnderecoDTO(obj)).collect(Collectors.toList());
