@@ -11,6 +11,6 @@ import java.util.List;
 public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
 
     @Transactional(readOnly = true)
-    @Query("SELECT e FROM Endereco e WHERE e.pessoa.id = :pessoaId ORDER BY e.apelido")
+    @Query("SELECT e FROM Endereco e WHERE e.idPessoa = :pessoaId ORDER BY e.apelido")
     public List<Endereco> findEnderecos(@Param("pessoaId") Integer pessoaId);
 }

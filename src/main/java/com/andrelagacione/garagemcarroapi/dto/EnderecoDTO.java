@@ -1,13 +1,11 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import com.andrelagacione.garagemcarroapi.domain.Cidade;
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
-import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.List;
 
 public class EnderecoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -34,12 +32,10 @@ public class EnderecoDTO implements Serializable {
     @Length(min=3, max=50, message="O tamanho deve ser entre 3 e 50 caractéres.")
     private String apelido;
 
-    private Pessoa pessoa;
+    @NotNull(message="Informe a pessoa.")
     private Integer idPessoa;
 
-    private Cidade cidade;
-
-    @NotEmpty(message="Informe a cidade.")
+    @NotNull(message="Informe a cidade.")
     private Integer idCidade;
 
     public EnderecoDTO() {}
@@ -52,8 +48,8 @@ public class EnderecoDTO implements Serializable {
         this.bairro = endereco.getBairro();
         this.cep = endereco.getCep();
         this.apelido = endereco.getApelido();
-        this.pessoa = endereco.getPessoa();
-        this.cidade = endereco.getCidade();
+        this.idPessoa = endereco.getIdPessoa();
+        this.idCidade = endereco.getIdCidade();
     }
 
     public Integer getId() {
@@ -112,28 +108,12 @@ public class EnderecoDTO implements Serializable {
         this.apelido = apelido;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-    }
-
     public Integer getIdPessoa() {
         return idPessoa;
     }
 
     public void setIdPessoa(Integer idPessoa) {
         this.idPessoa = idPessoa;
-    }
-
-    public Cidade getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
     }
 
     public Integer getIdCidade() {

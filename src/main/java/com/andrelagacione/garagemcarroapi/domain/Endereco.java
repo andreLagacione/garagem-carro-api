@@ -31,17 +31,15 @@ public class    Endereco implements Serializable {
     @Column(name = "apelido")
     private String apelido;
 
-    @ManyToOne
-    @JoinColumn(name = "pessoa_id")
-    private Pessoa pessoa;
+    @Column(name = "id_pessoa")
+    private Integer idPessoa;
 
-    @ManyToOne
-    @JoinColumn(name="cidade_id")
-    private Cidade cidade;
+    @Column(name = "id_cidade")
+    private Integer idCidade;
 
     public Endereco() {}
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, String apelido, Pessoa pessoa, Cidade cidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, String apelido, Integer idPessoa, Integer idCidade) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -49,8 +47,8 @@ public class    Endereco implements Serializable {
         this.bairro = bairro;
         this.cep = cep;
         this.apelido = apelido;
-        this.pessoa = pessoa;
-        this.cidade = cidade;
+        this.idPessoa = idPessoa;
+        this.idCidade = idCidade;
     }
 
     public Integer getId() {
@@ -109,19 +107,19 @@ public class    Endereco implements Serializable {
         this.apelido = apelido;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public Integer getIdPessoa() {
+        return idPessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setIdPessoa(Integer idPessoa) {
+        this.idPessoa = idPessoa;
     }
 
-    public Cidade getCidade() {
-        return cidade;
+    public Integer getIdCidade() {
+        return idCidade;
     }
 
-    public void setCidade(Cidade cidade) {
-        this.cidade = cidade;
+    public void setIdCidade(Integer idCidade) {
+        this.idCidade = idCidade;
     }
 }

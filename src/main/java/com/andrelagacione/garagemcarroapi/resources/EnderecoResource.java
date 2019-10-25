@@ -4,6 +4,7 @@ import com.andrelagacione.garagemcarroapi.domain.Cidade;
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
 import com.andrelagacione.garagemcarroapi.dto.EnderecoDTO;
 import com.andrelagacione.garagemcarroapi.dto.EstadoDTO;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.services.CidadeService;
 import com.andrelagacione.garagemcarroapi.services.EnderecoService;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
@@ -43,27 +44,16 @@ public class EnderecoResource {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody EnderecoDTO enderecoDTO) {
-        Endereco endereco = enderecoService.fromDto(enderecoDTO);
-        Cidade cidade = cidadeService.find(enderecoDTO.getIdCidade());
-        endereco.setCidade(cidade);
-        endereco = enderecoService.insert(endereco);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(endereco.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody EnderecoDTO enderecoDTO) {
+        return enderecoService.validarDados(enderecoDTO, true);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> update(
+    public ResponseEntity<PadraoMensagemRetorno> update(
             @Valid @RequestBody EnderecoDTO enderecoDTO,
             @PathVariable Integer id
     ) throws ObjectNotFoundException {
-        Endereco endereco = enderecoService.fromDto(enderecoDTO);
-        endereco.setId(id);
-        Cidade cidade = cidadeService.find(enderecoDTO.getIdCidade());
-        endereco.setCidade(cidade);
-        endereco = enderecoService.update(endereco);
-        return ResponseEntity.noContent().build();
+        return enderecoService.validarDados(enderecoDTO, false);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
