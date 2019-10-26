@@ -5,35 +5,35 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "endereco")
-public class    Endereco implements Serializable {
+public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "logradouro")
+    @Column(name = "logradouro", nullable = false)
     private String logradouro;
 
-    @Column(name = "numero")
+    @Column(name = "numero", nullable = false)
     private String numero;
 
     @Column(name = "complemento")
     private String complemento;
 
-    @Column(name = "bairro")
+    @Column(name = "bairro", nullable = false)
     private String bairro;
 
-    @Column(name = "cep")
+    @Column(name = "cep", nullable = false)
     private String cep;
 
-    @Column(name = "apelido")
+    @Column(name = "apelido", nullable = false)
     private String apelido;
 
-    @Column(name = "id_pessoa")
+    @Column(name = "id_pessoa", nullable = false)
     private Integer idPessoa;
 
-    @Column(name = "id_cidade")
+    @Column(name = "id_cidade", nullable = false)
     private Integer idCidade;
 
     public Endereco() {}
