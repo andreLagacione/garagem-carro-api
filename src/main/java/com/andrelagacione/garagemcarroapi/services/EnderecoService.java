@@ -8,6 +8,7 @@ import com.andrelagacione.garagemcarroapi.repositories.CidadeRepository;
 import com.andrelagacione.garagemcarroapi.repositories.EnderecoRepository;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,12 +43,12 @@ public class EnderecoService {
         return endereco.orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado"));
     }
 
-    public Endereco insert(Endereco endereco) {
+    private Endereco insert(Endereco endereco) {
         endereco.setId(null);
         return enderecoRepository.save(endereco);
     }
 
-    public Endereco update(Endereco endereco) throws ObjectNotFoundException {
+    private Endereco update(Endereco endereco) throws ObjectNotFoundException {
         Endereco newEndereco = this.findEndereco(endereco.getId());
         updateData(newEndereco, endereco);
         return enderecoRepository.save(newEndereco);
@@ -59,11 +60,12 @@ public class EnderecoService {
 
         try {
             enderecoRepository.deleteById(id);
-            mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Endereço removido com sucesso!");
+            mensagemRetorno.setHttpStatus(HttpStatus.OK);
+            mensagemRetorno.setHttpStatusCode(HttpStatus.valueOf("OK").value());
+            mensagemRetorno.setMensagem("Endereço removido com sucesso!");
             return ResponseEntity.ok(mensagemRetorno);
-        } catch (Exception e) {
-            mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.BAD_REQUEST, HttpStatus.valueOf("BAD_REQUEST").value(), "Erro ao excluir endereço: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemRetorno);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok().build();
         }
     }
 
