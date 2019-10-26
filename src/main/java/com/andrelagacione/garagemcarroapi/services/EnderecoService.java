@@ -27,10 +27,10 @@ public class EnderecoService {
     @Autowired
     private CidadeRepository cidadeRepository;
 
-    public ResponseEntity<List<EnderecoDTO>> findAll(Integer idPessoa) {
+    public List<EnderecoDTO> findAll(Integer idPessoa) {
         List<Endereco> enderecos = enderecoRepository.findEnderecos(idPessoa);
         List<EnderecoDTO> enderecosDTO = enderecos.stream().map(obj -> new EnderecoDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(enderecosDTO);
+        return enderecosDTO;
     }
 
     public ResponseEntity<Endereco> find(Integer id) throws ObjectNotFoundException {

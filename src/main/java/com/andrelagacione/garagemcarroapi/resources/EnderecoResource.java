@@ -23,7 +23,7 @@ public class EnderecoResource {
     public ResponseEntity<List<EnderecoDTO>> findAll(
             @PathVariable Integer idPessoa
     ) {
-        return enderecoService.findAll(idPessoa);
+        return ResponseEntity.ok().body(enderecoService.findAll(idPessoa));
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
@@ -36,7 +36,7 @@ public class EnderecoResource {
         return enderecoService.validarDados(enderecoDTO, true);
     }
 
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
+    @RequestMapping(method=RequestMethod.PUT)
     public ResponseEntity<PadraoMensagemRetorno> update(
             @Valid @RequestBody EnderecoDTO enderecoDTO,
             @PathVariable Integer id

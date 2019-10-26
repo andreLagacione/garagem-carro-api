@@ -15,11 +15,15 @@ public class TipoPessoa implements Serializable {
     @Column(name = "descricao", nullable = false)
     private String descricao;
 
+    @OneToOne(mappedBy = "tipoPesooa")
+    private Pessoa pessoa;
+
     public TipoPessoa() {}
 
-    public TipoPessoa(Integer id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
+    public TipoPessoa(Integer id, String descricao, Pessoa pessoa) {
+        this.id=id;
+        this.descricao=descricao;
+        this.pessoa=pessoa;
     }
 
     public Integer getId() {
@@ -27,7 +31,7 @@ public class TipoPessoa implements Serializable {
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
 
     public String getDescricao() {
@@ -35,6 +39,14 @@ public class TipoPessoa implements Serializable {
     }
 
     public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        this.descricao=descricao;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa=pessoa;
     }
 }

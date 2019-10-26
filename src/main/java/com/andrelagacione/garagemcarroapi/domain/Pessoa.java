@@ -25,18 +25,19 @@ public class Pessoa implements Serializable {
     @Column(name = "telefone")
     private String telefone;
 
-    @Column(name = "tipo_pessoa")
-    private Integer tipoPessoa;
+    @OneToOne
+    @JoinColumn(name = "tipo_pessoa", referencedColumnName = "id")
+    private TipoPessoa tipoPessoa;
 
     public Pessoa() {}
 
-    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, Integer tipoPessoa) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.cpfCnpj = cpfCnpj;
-        this.telefone = telefone;
-        this.tipoPessoa = tipoPessoa;
+    public Pessoa(Integer id, String nome, String email, String cpfCnpj, String telefone, TipoPessoa tipoPessoa) {
+        this.id=id;
+        this.nome=nome;
+        this.email=email;
+        this.cpfCnpj=cpfCnpj;
+        this.telefone=telefone;
+        this.tipoPessoa=tipoPessoa;
     }
 
     public Integer getId() {
@@ -44,7 +45,7 @@ public class Pessoa implements Serializable {
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.id=id;
     }
 
     public String getNome() {
@@ -52,7 +53,7 @@ public class Pessoa implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome=nome;
     }
 
     public String getEmail() {
@@ -60,7 +61,7 @@ public class Pessoa implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email=email;
     }
 
     public String getCpfCnpj() {
@@ -68,7 +69,7 @@ public class Pessoa implements Serializable {
     }
 
     public void setCpfCnpj(String cpfCnpj) {
-        this.cpfCnpj = cpfCnpj;
+        this.cpfCnpj=cpfCnpj;
     }
 
     public String getTelefone() {
@@ -76,14 +77,14 @@ public class Pessoa implements Serializable {
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        this.telefone=telefone;
     }
 
-    public Integer getTipoPessoa() {
+    public TipoPessoa getTipoPessoa() {
         return tipoPessoa;
     }
 
-    public void setTipoPessoa(Integer tipoPessoa) {
-        this.tipoPessoa = tipoPessoa;
+    public void setTipoPessoa(TipoPessoa tipoPessoa) {
+        this.tipoPessoa=tipoPessoa;
     }
 }
