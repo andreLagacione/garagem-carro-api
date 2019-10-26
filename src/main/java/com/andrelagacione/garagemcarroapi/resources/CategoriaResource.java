@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria> categorias = categoriaService.findAll();
-		List<CategoriaDTO> categoriaDTO = categorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(categoriaDTO);
+		return this.categoriaService.findAll();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -45,40 +44,29 @@ public class CategoriaResource {
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 		@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		Page<Categoria> categorias = categoriaService.findPage(page, size, orderBy, direction);
-		Page<CategoriaDTO> categoriaDTO = categorias.map(obj -> new CategoriaDTO(obj));
-		return ResponseEntity.ok().body(categoriaDTO);
+		return this.categoriaService.findPage(page, size, orderBy, direction);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		Categoria categoria = categoriaService.find(id);
-		return ResponseEntity.ok().body(categoria);
+		return this.categoriaService.find(id);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-		Categoria categoria= categoriaService.fromDto(categoriaDTO);
-		categoria = categoriaService.insert(categoria);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-					.path("/{id}").buildAndExpand(categoria.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+	public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
+		return this.categoriaService.salvarRegistro(categoriaDTO, true);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(
+	public ResponseEntity<PadraoMensagemRetorno> update(
 		@Valid @RequestBody CategoriaDTO categoriaDto,
 		@PathVariable Integer id
 	) throws ObjectNotFoundException {
-		Categoria categoria = categoriaService.fromDto(categoriaDto);
-		categoria.setId(id);
-		categoria = categoriaService.update(categoria);
-		return ResponseEntity.noContent().build();
+		return this.categoriaService.salvarRegistro(categoriaDto, false);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		categoriaService.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+		return this.categoriaService.delete(id);
 	}
 }

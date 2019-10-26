@@ -97,7 +97,7 @@ public class VeiculoService {
 	public Veiculo setarCategorias(Veiculo veiculo, List<Integer> idCategorias) {
 		List<Categoria> listaCategorias = new ArrayList<Categoria>();
 		for (int i : idCategorias) {
-			Categoria categoria = categoriaService.find(i);
+			Categoria categoria = categoriaService.findCategoria(i);
 			listaCategorias.add(categoria);
 		}
 		
