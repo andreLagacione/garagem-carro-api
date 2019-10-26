@@ -8,7 +8,6 @@ import com.andrelagacione.garagemcarroapi.repositories.CidadeRepository;
 import com.andrelagacione.garagemcarroapi.repositories.EnderecoRepository;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EnderecoService {
@@ -26,13 +26,20 @@ public class EnderecoService {
     @Autowired
     private CidadeRepository cidadeRepository;
 
-    public List<Endereco> findAll(Integer idPessoa) {
-        return enderecoRepository.findEnderecos(idPessoa);
+    public ResponseEntity<List<EnderecoDTO>> findAll(Integer idPessoa) {
+        List<Endereco> enderecos = enderecoRepository.findEnderecos(idPessoa);
+        List<EnderecoDTO> enderecosDTO = enderecos.stream().map(obj -> new EnderecoDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(enderecosDTO);
     }
 
-    public Endereco find(Integer id) throws ObjectNotFoundException {
+    public ResponseEntity<Endereco> find(Integer id) throws ObjectNotFoundException {
+        Endereco endereco = this.findEndereco(id);
+        return ResponseEntity.ok().body(endereco);
+    }
+
+    private Endereco findEndereco(Integer id) {
         Optional<Endereco> endereco = enderecoRepository.findById(id);
-        return endereco.orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado!"));
+        return endereco.orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado"));
     }
 
     public Endereco insert(Endereco endereco) {
@@ -41,18 +48,22 @@ public class EnderecoService {
     }
 
     public Endereco update(Endereco endereco) throws ObjectNotFoundException {
-        Endereco newEndereco = find(endereco.getId());
+        Endereco newEndereco = this.findEndereco(endereco.getId());
         updateData(newEndereco, endereco);
         return enderecoRepository.save(newEndereco);
     }
 
-    public void delete(Integer id) throws ObjectNotFoundException {
+    public ResponseEntity<PadraoMensagemRetorno> delete(Integer id) throws ObjectNotFoundException {
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno();
         find(id);
 
         try {
             enderecoRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Não é possível excluir um endereço que possui pessoas vinculadas a ele.");
+            mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Endereço removido com sucesso!");
+            return ResponseEntity.ok(mensagemRetorno);
+        } catch (Exception e) {
+            mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.BAD_REQUEST, HttpStatus.valueOf("BAD_REQUEST").value(), "Erro ao excluir endereço: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemRetorno);
         }
     }
 
