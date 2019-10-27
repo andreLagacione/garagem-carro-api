@@ -1,6 +1,7 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
 import com.andrelagacione.garagemcarroapi.domain.Pessoa;
+import com.andrelagacione.garagemcarroapi.domain.TipoPessoa;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -31,7 +32,9 @@ public class PessoaDTO implements Serializable {
     private String telefone;
 
     @NotNull(message="Informe o tipo da pessoa.")
-    private Integer tipoPessoa;
+    private TipoPessoa tipoPessoa;
+
+    private Integer idTipoPessoa;
 
     public PessoaDTO() {}
 
@@ -84,11 +87,19 @@ public class PessoaDTO implements Serializable {
         this.telefone = telefone;
     }
 
-    public Integer getTipoPessoa() {
+    public TipoPessoa getTipoPessoa() {
         return tipoPessoa;
     }
 
-    public void setTipoPessoa(Integer tipoPessoa) {
+    public void setTipoPessoa(TipoPessoa tipoPessoa) {
         this.tipoPessoa = tipoPessoa;
+    }
+
+    public Integer getIdTipoPessoa() {
+        return idTipoPessoa;
+    }
+
+    public void setIdTipoPessoa(Integer idTipoPessoa) {
+        this.idTipoPessoa = idTipoPessoa;
     }
 }

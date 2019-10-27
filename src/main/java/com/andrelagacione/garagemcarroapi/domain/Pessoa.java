@@ -25,7 +25,7 @@ public class Pessoa implements Serializable {
     @Column(name = "telefone")
     private String telefone;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "tipo_pessoa", referencedColumnName = "id")
     private TipoPessoa tipoPessoa;
 

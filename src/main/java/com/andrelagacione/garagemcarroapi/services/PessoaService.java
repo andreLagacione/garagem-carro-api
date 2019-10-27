@@ -85,7 +85,7 @@ public class PessoaService {
     }
 
     public ResponseEntity<PadraoMensagemRetorno> validarDados(PessoaDTO pessoaDTO, Boolean adicionar) {
-        Optional<TipoPessoa> tipoPessoa = this.tipoPessoaRepository.findById(pessoaDTO.getTipoPessoa());
+        Optional<TipoPessoa> tipoPessoa = this.tipoPessoaRepository.findById(pessoaDTO.getTipoPessoa().getId());
 
         if (!tipoPessoa.isPresent()) {
             PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, HttpStatus.valueOf("NOT_FOUND").value(), "Tipo de pessoa não encontrado!");
@@ -93,6 +93,7 @@ public class PessoaService {
         }
 
         Pessoa pessoa = this.fromDto(pessoaDTO);
+        pessoa.setTipoPessoa(tipoPessoa.get());
 
         if (adicionar == true) {
             return this.validarCpfCnpj(pessoa);

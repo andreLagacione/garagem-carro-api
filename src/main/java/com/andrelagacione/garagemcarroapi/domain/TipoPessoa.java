@@ -1,7 +1,11 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tipo_pessoa")
@@ -15,15 +19,15 @@ public class TipoPessoa implements Serializable {
     @Column(name = "descricao", nullable = false)
     private String descricao;
 
-    @OneToOne(mappedBy = "tipoPesooa")
-    private Pessoa pessoa;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tipoPessoa")
+    private List<Pessoa> pessoa = new ArrayList<>();
 
     public TipoPessoa() {}
 
-    public TipoPessoa(Integer id, String descricao, Pessoa pessoa) {
-        this.id=id;
-        this.descricao=descricao;
-        this.pessoa=pessoa;
+    public TipoPessoa(Integer id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
     }
 
     public Integer getId() {
@@ -42,11 +46,11 @@ public class TipoPessoa implements Serializable {
         this.descricao=descricao;
     }
 
-    public Pessoa getPessoa() {
+    public List<Pessoa> getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(List<Pessoa> pessoa) {
         this.pessoa=pessoa;
     }
 }

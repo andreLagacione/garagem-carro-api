@@ -55,7 +55,10 @@ public class TipoPessoaService {
     }
 
     public TipoPessoa fromDto(TipoPessoaDTO tipoPessoaDTO) {
-        return new TipoPessoa(tipoPessoaDTO.getId(), tipoPessoaDTO.getDescricao());
+        return new TipoPessoa(
+                tipoPessoaDTO.getId(),
+                tipoPessoaDTO.getDescricao()
+        );
     }
 
     public void updateData(TipoPessoa newTipoPessoa, TipoPessoa tipoPessoa) {
