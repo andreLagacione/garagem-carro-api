@@ -1,7 +1,10 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +29,12 @@ public class Pessoa implements Serializable {
     private String telefone;
 
     @ManyToOne
-    @JoinColumn(name = "tipo_pessoa", referencedColumnName = "id")
+    @JoinColumn(name = "tipo_pessoa", referencedColumnName = "id", nullable = false)
     private TipoPessoa tipoPessoa;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pessoa")
+    List<Endereco> enderecos = new ArrayList<>();
 
     public Pessoa() {}
 
@@ -86,5 +93,13 @@ public class Pessoa implements Serializable {
 
     public void setTipoPessoa(TipoPessoa tipoPessoa) {
         this.tipoPessoa=tipoPessoa;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 }

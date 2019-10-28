@@ -1,6 +1,8 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
+import com.andrelagacione.garagemcarroapi.domain.Cidade;
 import com.andrelagacione.garagemcarroapi.domain.Endereco;
+import com.andrelagacione.garagemcarroapi.domain.Pessoa;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
@@ -33,10 +35,10 @@ public class EnderecoDTO implements Serializable {
     private String apelido;
 
     @NotNull(message="Informe a pessoa.")
-    private Integer idPessoa;
+    private Pessoa pessoa;
 
     @NotNull(message="Informe a cidade.")
-    private Integer idCidade;
+    private Cidade cidade;
 
     public EnderecoDTO() {}
 
@@ -48,8 +50,8 @@ public class EnderecoDTO implements Serializable {
         this.bairro = endereco.getBairro();
         this.cep = endereco.getCep();
         this.apelido = endereco.getApelido();
-        this.idPessoa = endereco.getIdPessoa();
-        this.idCidade = endereco.getIdCidade();
+        this.pessoa = endereco.getPessoa();
+        this.cidade = endereco.getCidade();
     }
 
     public Integer getId() {
@@ -108,19 +110,19 @@ public class EnderecoDTO implements Serializable {
         this.apelido = apelido;
     }
 
-    public Integer getIdPessoa() {
-        return idPessoa;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setIdPessoa(Integer idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
-    public Integer getIdCidade() {
-        return idCidade;
+    public Cidade getCidade() {
+        return cidade;
     }
 
-    public void setIdCidade(Integer idCidade) {
-        this.idCidade = idCidade;
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 }

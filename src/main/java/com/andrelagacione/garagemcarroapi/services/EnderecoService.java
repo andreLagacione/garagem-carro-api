@@ -78,8 +78,8 @@ public class EnderecoService {
                 enderecoDTO.getBairro(),
                 enderecoDTO.getCep(),
                 enderecoDTO.getApelido(),
-                enderecoDTO.getIdPessoa(),
-                enderecoDTO.getIdCidade()
+                enderecoDTO.getPessoa(),
+                enderecoDTO.getCidade()
         );
     }
 
@@ -90,12 +90,12 @@ public class EnderecoService {
         newEndereco.setBairro(endereco.getBairro());
         newEndereco.setCep(endereco.getCep());
         newEndereco.setApelido(endereco.getApelido());
-        newEndereco.setIdPessoa(endereco.getIdPessoa());
-        newEndereco.setIdCidade(endereco.getIdCidade());
+        newEndereco.setPessoa(endereco.getPessoa());
+        newEndereco.setCidade(endereco.getCidade());
     }
 
     public ResponseEntity<PadraoMensagemRetorno> validarDados(EnderecoDTO enderecoDTO, Boolean adicionar) {
-        Optional<Cidade> cidade = this.cidadeRepository.findById(enderecoDTO.getIdCidade());
+        Optional<Cidade> cidade = this.cidadeRepository.findById(enderecoDTO.getCidade().getId());
 
         if (!cidade.isPresent()) {
             PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, HttpStatus.valueOf("NOT_FOUND").value(), "Cidade não econtrada!");

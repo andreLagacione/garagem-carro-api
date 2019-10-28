@@ -38,8 +38,7 @@ public class EnderecoResource {
 
     @RequestMapping(method=RequestMethod.PUT)
     public ResponseEntity<PadraoMensagemRetorno> update(
-            @Valid @RequestBody EnderecoDTO enderecoDTO,
-            @PathVariable Integer id
+            @Valid @RequestBody EnderecoDTO enderecoDTO
     ) throws ObjectNotFoundException {
         return enderecoService.validarDados(enderecoDTO, false);
     }

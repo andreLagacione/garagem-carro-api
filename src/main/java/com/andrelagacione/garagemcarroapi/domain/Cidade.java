@@ -1,6 +1,10 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -19,6 +23,10 @@ public class Cidade implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="estado_id")
 	private Estado estado;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "cidade")
+	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public Cidade() {}
 	
@@ -51,5 +59,13 @@ public class Cidade implements Serializable {
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
+	}
+
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
 }

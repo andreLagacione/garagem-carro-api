@@ -30,15 +30,17 @@ public class Endereco implements Serializable {
     @Column(name = "apelido", nullable = false)
     private String apelido;
 
-    @Column(name = "id_pessoa", nullable = false)
-    private Integer idPessoa;
+    @ManyToOne
+    @JoinColumn(name = "id_pessoa", referencedColumnName = "id", nullable = false)
+    private Pessoa pessoa;
 
-    @Column(name = "id_cidade", nullable = false)
-    private Integer idCidade;
+    @ManyToOne
+    @JoinColumn(name = "id_cidade", referencedColumnName = "id", nullable = false)
+    private Cidade cidade;
 
     public Endereco() {}
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, String apelido, Integer idPessoa, Integer idCidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, String apelido, Pessoa pessoa, Cidade cidade) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -46,8 +48,8 @@ public class Endereco implements Serializable {
         this.bairro = bairro;
         this.cep = cep;
         this.apelido = apelido;
-        this.idPessoa = idPessoa;
-        this.idCidade = idCidade;
+        this.pessoa = pessoa;
+        this.cidade = cidade;
     }
 
     public Integer getId() {
@@ -106,19 +108,19 @@ public class Endereco implements Serializable {
         this.apelido = apelido;
     }
 
-    public Integer getIdPessoa() {
-        return idPessoa;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setIdPessoa(Integer idPessoa) {
-        this.idPessoa = idPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
-    public Integer getIdCidade() {
-        return idCidade;
+    public Cidade getCidade() {
+        return cidade;
     }
 
-    public void setIdCidade(Integer idCidade) {
-        this.idCidade = idCidade;
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 }
