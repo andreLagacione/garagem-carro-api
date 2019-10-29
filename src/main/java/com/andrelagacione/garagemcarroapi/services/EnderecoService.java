@@ -28,44 +28,34 @@ public class EnderecoService {
     private CidadeRepository cidadeRepository;
 
     public List<EnderecoDTO> findAll(Integer idPessoa) {
-        List<Endereco> enderecos = enderecoRepository.findEnderecos(idPessoa);
+        List<Endereco> enderecos = this.enderecoRepository.findEnderecos(idPessoa);
         List<EnderecoDTO> enderecosDTO = enderecos.stream().map(obj -> new EnderecoDTO(obj)).collect(Collectors.toList());
         return enderecosDTO;
     }
 
-    public ResponseEntity<Endereco> find(Integer id) throws ObjectNotFoundException {
-        Endereco endereco = this.findEndereco(id);
-        return ResponseEntity.ok().body(endereco);
-    }
-
-    private Endereco findEndereco(Integer id) {
-        Optional<Endereco> endereco = enderecoRepository.findById(id);
+    public Endereco find(Integer id) throws ObjectNotFoundException {
+        Optional<Endereco> endereco = this.enderecoRepository.findById(id);
         return endereco.orElseThrow(() -> new ObjectNotFoundException("Endereço não encontrado"));
     }
 
     private Endereco insert(Endereco endereco) {
         endereco.setId(null);
-        return enderecoRepository.save(endereco);
+        return this.enderecoRepository.save(endereco);
     }
 
     private Endereco update(Endereco endereco) throws ObjectNotFoundException {
-        Endereco newEndereco = this.findEndereco(endereco.getId());
-        updateData(newEndereco, endereco);
-        return enderecoRepository.save(newEndereco);
+        Endereco newEndereco = this.find(endereco.getId());
+        this.updateData(newEndereco, endereco);
+        return this.enderecoRepository.save(newEndereco);
     }
 
-    public ResponseEntity<PadraoMensagemRetorno> delete(Integer id) throws ObjectNotFoundException {
-        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno();
+    public void delete(Integer id) throws ObjectNotFoundException {
         find(id);
 
         try {
-            enderecoRepository.deleteById(id);
-            mensagemRetorno.setHttpStatus(HttpStatus.OK);
-            mensagemRetorno.setHttpStatusCode(HttpStatus.valueOf("OK").value());
-            mensagemRetorno.setMensagem("Endereço removido com sucesso!");
-            return ResponseEntity.ok(mensagemRetorno);
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.ok().build();
+            this.enderecoRepository.deleteById(id);
+        } catch (ObjectNotFoundException e) {
+            throw new ObjectNotFoundException("Erro ao excluir endereço: ", e);
         }
     }
 
@@ -94,35 +84,19 @@ public class EnderecoService {
         newEndereco.setCidade(endereco.getCidade());
     }
 
-    public ResponseEntity<PadraoMensagemRetorno> validarDados(EnderecoDTO enderecoDTO, Boolean adicionar) {
+    public Endereco validarDados(EnderecoDTO enderecoDTO, Boolean adicionar) throws ObjectNotFoundException {
         Optional<Cidade> cidade = this.cidadeRepository.findById(enderecoDTO.getCidade().getId());
 
         if (!cidade.isPresent()) {
-            PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.NOT_FOUND, HttpStatus.valueOf("NOT_FOUND").value(), "Cidade não econtrada!");
-            return ResponseEntity.badRequest().body(mensagemRetorno);
+            throw new ObjectNotFoundException("A cidade informada não foi encontrada! Por favor informe outra cidade.");
         }
 
         Endereco endereco = this.fromDto(enderecoDTO);
 
         if (adicionar) {
-            return adicionarEndereco(endereco);
+            return this.insert(endereco);
         }
 
-        return this.editarEndereco(endereco);
-    }
-
-    private ResponseEntity<PadraoMensagemRetorno> adicionarEndereco(Endereco endereco) {
-        this.insert(endereco);
-        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Endereço adicionado com sucesso!");
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(endereco.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(mensagemRetorno);
-    }
-
-    private ResponseEntity<PadraoMensagemRetorno> editarEndereco(Endereco endereco) {
-        this.update(endereco);
-        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Endereço editado com sucesso!");
-        return ResponseEntity.ok(mensagemRetorno);
+        return this.update(endereco);
     }
 }

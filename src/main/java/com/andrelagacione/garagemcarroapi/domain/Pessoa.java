@@ -33,7 +33,7 @@ public class Pessoa implements Serializable {
     private TipoPessoa tipoPessoa;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pessoa")
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Endereco> enderecos = new ArrayList<>();
 
     public Pessoa() {}
