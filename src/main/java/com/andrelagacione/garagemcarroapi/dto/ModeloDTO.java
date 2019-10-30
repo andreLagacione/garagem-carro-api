@@ -19,7 +19,6 @@ public class ModeloDTO implements Serializable {
     private String nome;
 
     @NotNull(message = "Selecione uma marca")
-    private Integer idMarca;
     private Marca marca;
 
     public ModeloDTO() {}
@@ -44,14 +43,6 @@ public class ModeloDTO implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Integer getIdMarca() {
-        return idMarca;
-    }
-
-    public void setIdMarca(Integer idMarca) {
-        this.idMarca = idMarca;
     }
 
     public Marca getMarca() {

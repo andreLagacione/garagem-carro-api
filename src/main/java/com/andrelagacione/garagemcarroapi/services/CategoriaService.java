@@ -61,11 +61,16 @@ public class CategoriaService {
 	}
 	
 	public Categoria fromDto(CategoriaDTO categoriaDTO) {
-		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+		return new Categoria(
+				categoriaDTO.getId(),
+				categoriaDTO.getNome(),
+				categoriaDTO.getVeiculos()
+		);
 	}
 	
 	public void updateData(Categoria newCategoria, Categoria categoria) {
 		newCategoria.setNome(categoria.getNome());
+		newCategoria.setVeiculos(categoria.getVeiculos());
 	}
 
 	public Categoria salvarRegistro(CategoriaDTO categoriaDTO, Boolean adicionar) {

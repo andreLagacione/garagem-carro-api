@@ -58,7 +58,7 @@ public class ModeloResource {
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody ModeloDTO modeloDTO) {
         Modelo modelo = this.modeloService.fromDto(modeloDTO);
-        Marca marca = this.marcaService.find(modeloDTO.getIdMarca());
+        Marca marca = this.marcaService.find(modeloDTO.getMarca().getId());
         modelo.setMarca(marca);
         modelo = this.modeloService.insert(modelo);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -73,7 +73,7 @@ public class ModeloResource {
     ) throws ObjectNotFoundException {
         Modelo modelo = this.modeloService.fromDto(modeloDTO);
         modelo.setId(id);
-        Marca marca = this.marcaService.find(modeloDTO.getIdMarca());
+        Marca marca = this.marcaService.find(modeloDTO.getMarca().getId());
         modelo.setMarca(marca);
         modelo = this.modeloService.update(modelo);
         return ResponseEntity.noContent().build();

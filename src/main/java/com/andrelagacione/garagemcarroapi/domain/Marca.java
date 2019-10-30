@@ -17,13 +17,16 @@ public class Marca implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "nome")
+	@Column(name = "nome", nullable = false)
 	private String nome;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "marca")
+	private List<Modelo> modelos = new ArrayList<>();
 	
 	public Marca() {}
 
 	public Marca(Integer id, String nome) {
-		super();
 		this.id = id;
 		this.nome = nome;
 	}
@@ -44,4 +47,11 @@ public class Marca implements Serializable {
 		this.nome = nome;
 	}
 
+	public List<Modelo> getModelos() {
+		return modelos;
+	}
+
+	public void setModelos(List<Modelo> modelos) {
+		this.modelos=modelos;
+	}
 }

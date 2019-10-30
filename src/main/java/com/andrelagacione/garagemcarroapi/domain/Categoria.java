@@ -23,10 +23,10 @@ public class Categoria implements Serializable {
 	
 	public Categoria() {}
 
-	public Categoria(Integer id, String nome) {
-		super();
+	public Categoria(Integer id, String nome, List<Veiculo> veiculos) {
 		this.id = id;
 		this.nome = nome;
+		this.veiculos = veiculos;
 	}
 
 	public Integer getId() {
@@ -43,5 +43,13 @@ public class Categoria implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<Veiculo> getVeiculos() {
+		return veiculos;
+	}
+
+	public void setVeiculos(List<Veiculo> veiculos) {
+		this.veiculos=veiculos;
 	}
 }
