@@ -1,15 +1,10 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotEmpty;
-
-import com.andrelagacione.garagemcarroapi.domain.Veiculo;
+import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import org.hibernate.validator.constraints.Length;
 
-import com.andrelagacione.garagemcarroapi.domain.Categoria;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
