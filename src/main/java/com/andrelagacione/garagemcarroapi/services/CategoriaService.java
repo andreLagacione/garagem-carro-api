@@ -2,7 +2,6 @@ package com.andrelagacione.garagemcarroapi.services;
 
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import com.andrelagacione.garagemcarroapi.dto.CategoriaDTO;
-import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.repositories.CategoriaRespository;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,19 +62,16 @@ public class CategoriaService {
 	public Categoria fromDto(CategoriaDTO categoriaDTO) {
 		return new Categoria(
 				categoriaDTO.getId(),
-				categoriaDTO.getNome(),
-				categoriaDTO.getVeiculos()
+				categoriaDTO.getNome()
 		);
 	}
 	
 	public void updateData(Categoria newCategoria, Categoria categoria) {
 		newCategoria.setNome(categoria.getNome());
-		newCategoria.setVeiculos(categoria.getVeiculos());
 	}
 
 	public Categoria salvarRegistro(CategoriaDTO categoriaDTO, Boolean adicionar) {
 		Categoria categoria = this.fromDto(categoriaDTO);
-		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno();
 
 		if (adicionar) {
 			this.insert(categoria);

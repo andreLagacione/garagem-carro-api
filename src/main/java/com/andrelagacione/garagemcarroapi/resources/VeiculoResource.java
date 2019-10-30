@@ -66,9 +66,9 @@ public class VeiculoResource {
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) throws Error {
 		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
-		Modelo modelo = modeloService.find(veiculoDTO.getIdModelo());
+		Modelo modelo = modeloService.find(veiculoDTO.getModelo().getId());
 		veiculo.setModelo(modelo);
-		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
+		veiculoService.setarCategorias(veiculo, veiculoDTO.getCategorias());
 		veiculo = veiculoService.insert(veiculo);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(veiculo.getId()).toUri();
@@ -82,9 +82,9 @@ public class VeiculoResource {
 	) throws ObjectNotFoundException {
 		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
 		veiculo.setId(id);
-		Modelo modelo = modeloService.find(veiculoDTO.getIdModelo());
+		Modelo modelo = modeloService.find(veiculoDTO.getModelo().getId());
 		veiculo.setModelo(modelo);
-		veiculoService.setarCategorias(veiculo, veiculoDTO.getIdCategorias());
+		veiculoService.setarCategorias(veiculo, veiculoDTO.getCategorias());
 		veiculo = veiculoService.update(veiculo);
 		return ResponseEntity.noContent().build();
 	}

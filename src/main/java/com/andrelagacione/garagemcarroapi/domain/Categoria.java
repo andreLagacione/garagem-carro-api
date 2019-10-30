@@ -17,16 +17,12 @@ public class Categoria implements Serializable {
 
 	@Column(name = "nome", nullable = false)
 	private String nome;
-
-	@ManyToMany(mappedBy = "categorias")
-	private List<Veiculo> veiculos = new ArrayList<>();
 	
 	public Categoria() {}
 
-	public Categoria(Integer id, String nome, List<Veiculo> veiculos) {
+	public Categoria(Integer id, String nome) {
 		this.id = id;
 		this.nome = nome;
-		this.veiculos = veiculos;
 	}
 
 	public Integer getId() {
@@ -43,13 +39,5 @@ public class Categoria implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public List<Veiculo> getVeiculos() {
-		return veiculos;
-	}
-
-	public void setVeiculos(List<Veiculo> veiculos) {
-		this.veiculos=veiculos;
 	}
 }

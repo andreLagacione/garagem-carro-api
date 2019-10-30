@@ -94,10 +94,10 @@ public class VeiculoService {
 		newVeiculo.setCategorias(veiculo.getCategorias());
 	}
 	
-	public Veiculo setarCategorias(Veiculo veiculo, List<Integer> idCategorias) {
+	public Veiculo setarCategorias(Veiculo veiculo, List<Categoria> categorias) {
 		List<Categoria> listaCategorias = new ArrayList<Categoria>();
-		for (int i : idCategorias) {
-			Categoria categoria = categoriaService.find(i);
+		for (Categoria i : categorias) {
+			Categoria categoria = categoriaService.find(i.getId());
 			listaCategorias.add(categoria);
 		}
 		

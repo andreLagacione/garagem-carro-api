@@ -30,28 +30,25 @@ public class VeiculoDTO implements Serializable {
 	@Size(min = 3, max = 500, message = "O tamanho tem que estar entre 3 e 500 caractéres")
 	private String descricao;
 
-	private List<Categoria> categorias;
-
 	@NotEmpty(message = "Informe pelo menos uma categoria")
 	@Length(min = 1)
-	private List<Integer> idCategorias;
+	private List<Categoria> categorias;
 
 	@NotNull(message = "Selecione o modelo.")
-	private Integer idModelo;
 	private Modelo modelo;
 
 	public VeiculoDTO() {}
 	
 	public VeiculoDTO(Veiculo veiculo) {
-		id = veiculo.getId();
-		valor = veiculo.getValor();
-		cor = veiculo.getCor();
-		cavalos = veiculo.getCavalos();
-		cilindradas = veiculo.getCilindradas();
-		portas = veiculo.getPortas();
-		descricao = veiculo.getDescricao();
-		categorias = veiculo.getCategorias();
-		modelo = veiculo.getModelo();
+		this.id = veiculo.getId();
+		this.valor = veiculo.getValor();
+		this.cor = veiculo.getCor();
+		this.cavalos = veiculo.getCavalos();
+		this.cilindradas = veiculo.getCilindradas();
+		this.portas = veiculo.getPortas();
+		this.descricao = veiculo.getDescricao();
+		this.categorias = veiculo.getCategorias();
+		this.modelo = veiculo.getModelo();
 	}
 
 	public Integer getId() {
@@ -116,22 +113,6 @@ public class VeiculoDTO implements Serializable {
 
 	public void setCategorias(List<Categoria> categoria) {
 		this.categorias = categoria;
-	}
-	
-	public List<Integer> getIdCategorias() {
-		return idCategorias;
-	}
-
-	public void setIdCategorias(List<Integer> idCategorias) {
-		this.idCategorias = idCategorias;
-	}
-
-	public Integer getIdModelo() {
-		return idModelo;
-	}
-
-	public void setIdModelo(Integer idModelo) {
-		this.idModelo = idModelo;
 	}
 
 	public Modelo getModelo() {
