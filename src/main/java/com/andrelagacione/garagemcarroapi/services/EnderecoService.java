@@ -50,7 +50,7 @@ public class EnderecoService {
     }
 
     public void delete(Integer id) throws ObjectNotFoundException {
-        find(id);
+        this.find(id);
 
         try {
             this.enderecoRepository.deleteById(id);

@@ -1,6 +1,8 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -15,6 +17,9 @@ public class Categoria implements Serializable {
 
 	@Column(name = "nome", nullable = false)
 	private String nome;
+
+	@ManyToMany(mappedBy = "categorias")
+	private List<Veiculo> veiculos = new ArrayList<>();
 	
 	public Categoria() {}
 

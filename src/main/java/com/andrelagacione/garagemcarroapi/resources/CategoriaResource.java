@@ -1,29 +1,20 @@
 package com.andrelagacione.garagemcarroapi.resources;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import com.andrelagacione.garagemcarroapi.dto.CategoriaDTO;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.services.CategoriaService;
-
 import javassist.tools.rmi.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -34,7 +25,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		return this.categoriaService.findAll();
+		return ResponseEntity.ok().body(this.categoriaService.findAll());
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -44,29 +35,34 @@ public class CategoriaResource {
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 		@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		return this.categoriaService.findPage(page, size, orderBy, direction);
+		return ResponseEntity.ok().body(this.categoriaService.findPage(page, size, orderBy, direction));
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		return this.categoriaService.find(id);
+		return ResponseEntity.ok().body(this.categoriaService.find(id));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-		return this.categoriaService.salvarRegistro(categoriaDTO, true);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(this.categoriaService.salvarRegistro(categoriaDTO, true).getId()).toUri();
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Categoria adicionada com sucesso!");
+		return ResponseEntity.created(uri).body(mensagemRetorno);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@RequestMapping(method=RequestMethod.PUT)
 	public ResponseEntity<PadraoMensagemRetorno> update(
-		@Valid @RequestBody CategoriaDTO categoriaDto,
-		@PathVariable Integer id
+		@Valid @RequestBody CategoriaDTO categoriaDto
 	) throws ObjectNotFoundException {
-		return this.categoriaService.salvarRegistro(categoriaDto, false);
+		this.categoriaService.salvarRegistro(categoriaDto, false);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Categoria criada com sucesso!");
+		return ResponseEntity.ok(mensagemRetorno);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		return this.categoriaService.delete(id);
+		this.categoriaService.delete(id);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Categoria removida com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 }
