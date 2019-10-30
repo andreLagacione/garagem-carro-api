@@ -53,7 +53,7 @@ public class EnderecoService {
         }
     }
 
-    public Endereco fromDto(EnderecoDTO enderecoDTO) {
+    private Endereco fromDto(EnderecoDTO enderecoDTO) {
         return new Endereco(
                 enderecoDTO.getId(),
                 enderecoDTO.getLogradouro(),

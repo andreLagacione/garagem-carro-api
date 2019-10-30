@@ -1,17 +1,24 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import java.io.Serializable;
-
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
 import com.andrelagacione.garagemcarroapi.domain.Estado;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 public class CidadeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
+
+	@NotEmpty(message = "Preenchimento obrigatório!")
+	@Length(min = 3, max = 50, message = "O tamanho deve estar em 3 e 50 caractéres!")
 	private String nome;
+
+	@NotNull(message = "Informe o estado!")
 	private Estado estado;
-	private Integer idEstado;
 	
 	public CidadeDTO() {}
 	
@@ -43,14 +50,6 @@ public class CidadeDTO implements Serializable {
 
 	public void setEstado(Estado estado) {
 		this.estado = estado;
-	}
-	
-	public Integer getIdEstado() {
-		return idEstado;
-	}
-
-	public void setIdEstado(Integer idEstado) {
-		this.idEstado = idEstado;
 	}
 
 }

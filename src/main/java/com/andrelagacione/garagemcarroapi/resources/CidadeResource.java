@@ -1,29 +1,21 @@
 package com.andrelagacione.garagemcarroapi.resources;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import com.andrelagacione.garagemcarroapi.domain.Cidade;
-import com.andrelagacione.garagemcarroapi.domain.Estado;
 import com.andrelagacione.garagemcarroapi.dto.CidadeDTO;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.services.CidadeService;
 import com.andrelagacione.garagemcarroapi.services.EstadoService;
 import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -39,9 +31,7 @@ public class CidadeResource {
 	public ResponseEntity<List<CidadeDTO>> findAll(
 		@RequestParam(value="idEstado") Integer idEstado
 	) throws ObjectNotFoundException {
-		List<Cidade> cidades = cidadeService.findByEstado(idEstado);
-		List<CidadeDTO> cidadeDTO = cidades.stream().map(obj -> new CidadeDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(cidadeDTO);
+		return ResponseEntity.ok().body(this.cidadeService.findByEstado(idEstado));
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -52,45 +42,39 @@ public class CidadeResource {
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 		@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		Page<Cidade> cidades = cidadeService.findPage(page, size, orderBy, direction, idEstado);
-		Page<CidadeDTO> cidadeDTO = cidades.map(obj -> new CidadeDTO(obj));
-		return ResponseEntity.ok().body(cidadeDTO);
+		return ResponseEntity.ok().body(this.cidadeService.findPage(page, size, orderBy, direction, idEstado));
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Cidade> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		Cidade cidade = cidadeService.find(id);
-		return ResponseEntity.ok().body(cidade);
+		return ResponseEntity.ok().body(this.cidadeService.find(id));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CidadeDTO cidadeDTO) {
-		Cidade cidade = cidadeService.fromDto(cidadeDTO);
-		Estado estado = estadoService.find(cidadeDTO.getIdEstado());
-		cidade.setEstado(estado);
-		cidade = cidadeService.insert(cidade);
+	public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody CidadeDTO cidadeDTO) {
+		Cidade cidade = this.cidadeService.validarDados(cidadeDTO, true);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Cidade adicionada com sucesso!");
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(cidade.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+
+		return ResponseEntity.created(uri).body(mensagemRetorno);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(
-		@Valid @RequestBody CidadeDTO cidadeDTO,
-		@PathVariable Integer id
+	@RequestMapping(method=RequestMethod.PUT)
+	public ResponseEntity<PadraoMensagemRetorno> update(
+		@Valid @RequestBody CidadeDTO cidadeDTO
 	) throws ObjectNotFoundException {
-		Cidade cidade = cidadeService.fromDto(cidadeDTO);
-		cidade.setId(id);
-		Estado estado = estadoService.find(cidadeDTO.getIdEstado());
-		cidade.setEstado(estado);
-		cidade = cidadeService.update(cidade);
-		return ResponseEntity.noContent().build();
+		Cidade cidade = this.cidadeService.validarDados(cidadeDTO, false);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Cidade editada com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		cidadeService.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+		this.cidadeService.delete(id);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Cidade removida com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 
 }

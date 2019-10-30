@@ -59,7 +59,7 @@ public class CategoriaService {
 		}
 	}
 	
-	public Categoria fromDto(CategoriaDTO categoriaDTO) {
+	private Categoria fromDto(CategoriaDTO categoriaDTO) {
 		return new Categoria(
 				categoriaDTO.getId(),
 				categoriaDTO.getNome()
