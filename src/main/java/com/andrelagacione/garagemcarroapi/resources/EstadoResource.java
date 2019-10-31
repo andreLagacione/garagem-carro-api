@@ -1,13 +1,16 @@
 package com.andrelagacione.garagemcarroapi.resources;
 
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +36,7 @@ public class EstadoResource {
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<EstadoDTO>> findAll() {
-		List<Estado> list = estadoService.findAll();
-		List<EstadoDTO> listDto = list.stream().map(obj -> new EstadoDTO(obj)).collect(Collectors.toList());  
-		return ResponseEntity.ok().body(listDto);
+		return ResponseEntity.ok().body(this.estadoService.findAll());
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -45,40 +46,38 @@ public class EstadoResource {
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy,
 		@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		Page<Estado> estados = estadoService.findPage(page, size, orderBy, direction);
-		Page<EstadoDTO> estadoDTO = estados.map(obj -> new EstadoDTO(obj));
-		return ResponseEntity.ok().body(estadoDTO);
+		return ResponseEntity.ok().body(this.estadoService.findPage(page, size, orderBy, direction));
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Estado> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		Estado estado = estadoService.find(id);
-		return ResponseEntity.ok().body(estado);
+		return ResponseEntity.ok().body(this.estadoService.find(id));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody EstadoDTO estadoDTO) {
-		Estado estado = estadoService.fromDto(estadoDTO);
-		estado = estadoService.insert(estado);
+	public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody EstadoDTO estadoDTO) {
+		Estado estado = this.estadoService.salvarEstado(estadoDTO, true);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Estado criado com sucesso!");
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(estado.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+
+		return ResponseEntity.created(uri).body(mensagemRetorno);
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(
-			@Valid @RequestBody EstadoDTO estadoDTO,
-			@PathVariable Integer id
+	@RequestMapping(method=RequestMethod.PUT)
+	public ResponseEntity<PadraoMensagemRetorno> update(
+			@Valid @RequestBody EstadoDTO estadoDTO
 	) throws ObjectNotFoundException {
-		Estado estado = estadoService.fromDto(estadoDTO);
-		estado.setId(id);
-		estado = estadoService.update(estado);
-		return ResponseEntity.noContent().build();
+		this.estadoService.salvarEstado(estadoDTO, false);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Estado editado com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		estadoService.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+		this.estadoService.delete(id);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Estado removido com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 }

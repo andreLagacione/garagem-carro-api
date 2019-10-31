@@ -23,14 +23,9 @@ public class Estado implements Serializable{
 	@Column(name = "sigla")
 	private String sigla;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy="estado")
-	private List<Cidade> cidades = new ArrayList<>();
-	
 	public Estado() {}
 	
 	public Estado(Integer id, String nome, String sigla) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.sigla = sigla;
@@ -50,14 +45,6 @@ public class Estado implements Serializable{
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	
-	public List<Cidade> getCidades() {
-		return cidades;
-	}
-
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
 	}
 	
 	public String getSigla() {
