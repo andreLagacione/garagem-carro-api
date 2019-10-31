@@ -42,8 +42,8 @@ public class CategoriaService {
 		categoria.setId(null);
 		return this.categoriaRepository.save(categoria);
 	}
-	
-	public Categoria update(Categoria categoria) throws ObjectNotFoundException {
+
+	private Categoria update(Categoria categoria) throws ObjectNotFoundException {
 		Categoria newCategoria = find(categoria.getId());
 		this.updateData(newCategoria, categoria);
 		return this.categoriaRepository.save(newCategoria);

@@ -42,13 +42,13 @@ public class CidadeService {
 		Optional<Cidade> cidade = this.cidadeRepository.findById(id);
 		return cidade.orElseThrow(() -> new ObjectNotFoundException("Cidade não encontrada!"));
 	}
-	
-	public Cidade insert(Cidade cidade) {
+
+	private Cidade insert(Cidade cidade) {
 		cidade.setId(null);
 		return this.cidadeRepository.save(cidade);
 	}
-	
-	public Cidade update(Cidade cidade) throws ObjectNotFoundException {
+
+	private Cidade update(Cidade cidade) throws ObjectNotFoundException {
 		Cidade newCidade = this.find(cidade.getId());
 		this.updateData(newCidade, cidade);
 		return this.cidadeRepository.save(newCidade);

@@ -38,13 +38,13 @@ public class EstadoService {
 		Optional<Estado> estado = this.estadoRepository.findById(id);
 		return estado.orElseThrow(() -> new ObjectNotFoundException("Estado não encontrado!"));
 	}
-	
-	public Estado insert(Estado estado) {
+
+	private Estado insert(Estado estado) {
 		estado.setId(null);
 		return estadoRepository.save(estado);
 	}
 	
-	public Estado update(Estado estado) throws ObjectNotFoundException {
+	private Estado update(Estado estado) throws ObjectNotFoundException {
 		Estado newEstado = find(estado.getId());
 		updateData(newEstado, estado);
 		return estadoRepository.save(newEstado);
