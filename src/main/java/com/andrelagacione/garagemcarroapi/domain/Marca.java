@@ -1,12 +1,7 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "marca")
@@ -19,10 +14,6 @@ public class Marca implements Serializable {
 
 	@Column(name = "nome", nullable = false)
 	private String nome;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "marca")
-	private List<Modelo> modelos = new ArrayList<>();
 	
 	public Marca() {}
 
@@ -45,13 +36,5 @@ public class Marca implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public List<Modelo> getModelos() {
-		return modelos;
-	}
-
-	public void setModelos(List<Modelo> modelos) {
-		this.modelos=modelos;
 	}
 }

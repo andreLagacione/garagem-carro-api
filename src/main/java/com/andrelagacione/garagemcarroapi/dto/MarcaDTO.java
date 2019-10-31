@@ -1,12 +1,10 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-
+import com.andrelagacione.garagemcarroapi.domain.Marca;
 import org.hibernate.validator.constraints.Length;
 
-import com.andrelagacione.garagemcarroapi.domain.Marca;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 public class MarcaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
