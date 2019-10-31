@@ -55,7 +55,7 @@ public class CategoriaService {
 		try {
 			this.categoriaRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new ObjectNotFoundException("Não é possível excluir categorias que existem veículos vinculados à ela! ", e);
+			throw new DataIntegrityViolationException("Não é possível excluir categorias que existem veículos vinculados à ela! ", e);
 		}
 	}
 	
