@@ -1,8 +1,8 @@
 package com.andrelagacione.garagemcarroapi.dto;
 
-import java.io.Serializable;
-
 import com.andrelagacione.garagemcarroapi.domain.Menu;
+
+import java.io.Serializable;
 
 public class MenuDTO implements Serializable {
 	private static final long serialVersionUID = 1L;

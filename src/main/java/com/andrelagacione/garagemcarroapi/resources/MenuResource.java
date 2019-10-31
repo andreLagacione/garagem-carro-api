@@ -23,8 +23,6 @@ public class MenuResource {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<MenuDTO>> findAll() {
-		List<Menu> itensMenu = menuService.findAll();
-		List<MenuDTO> menuDTO = itensMenu.stream().map(obj -> new MenuDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(menuDTO);
+		return ResponseEntity.ok().body(this.menuService.findAll());
 	}
 }

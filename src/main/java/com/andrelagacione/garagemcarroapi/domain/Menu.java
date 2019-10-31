@@ -1,8 +1,7 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "menu")
@@ -25,7 +24,6 @@ public class Menu implements Serializable {
 	public Menu() {}
 	
 	public Menu(Integer id, String nome, String url, String icone) {
-		super();
 		this.id = id;
 		this.nome = nome;
 		this.url = url;
