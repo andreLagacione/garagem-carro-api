@@ -46,7 +46,7 @@ public class EstadoService {
 	
 	private Estado update(Estado estado) throws ObjectNotFoundException {
 		Estado newEstado = find(estado.getId());
-		updateData(newEstado, estado);
+		this.updateData(newEstado, estado);
 		return estadoRepository.save(newEstado);
 	}
 	
@@ -63,8 +63,8 @@ public class EstadoService {
 	private Estado fromDto(EstadoDTO estadoDTO) {
 		return new Estado(estadoDTO.getId(), estadoDTO.getNome(), estadoDTO.getSigla());
 	}
-	
-	public void updateData(Estado newEstado, Estado estado) {
+
+	private void updateData(Estado newEstado, Estado estado) {
 			newEstado.setNome(estado.getNome());
 			newEstado.setSigla(estado.getSigla());
 	}

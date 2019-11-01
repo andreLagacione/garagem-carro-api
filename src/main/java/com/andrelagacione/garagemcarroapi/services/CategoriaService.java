@@ -65,8 +65,8 @@ public class CategoriaService {
 				categoriaDTO.getNome()
 		);
 	}
-	
-	public void updateData(Categoria newCategoria, Categoria categoria) {
+
+	private void updateData(Categoria newCategoria, Categoria categoria) {
 		newCategoria.setNome(categoria.getNome());
 	}
 

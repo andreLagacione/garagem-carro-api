@@ -38,14 +38,14 @@ public class MarcaService {
 		return marca.orElseThrow(() -> new ObjectNotFoundException("Marca não encontrada!"));
 	}
 	
-	public Marca insert(Marca marca) {
+	private Marca insert(Marca marca) {
 		marca.setId(null);
 		return marcaRepository.save(marca);
 	}
-	
-	public Marca update(Marca marca) throws ObjectNotFoundException {
+
+	private Marca update(Marca marca) throws ObjectNotFoundException {
 		Marca newMarca = find(marca.getId());
-		updateData(newMarca, marca);
+		this.updateData(newMarca, marca);
 		return marcaRepository.save(newMarca);
 	}
 	
@@ -58,12 +58,12 @@ public class MarcaService {
 			throw new DataIntegrityViolationException("Não é possível excluir uma marca que possui modelos relacionados!");
 		}
 	}
-	
-	public Marca fromDto(MarcaDTO marcaDTO) {
+
+	private Marca fromDto(MarcaDTO marcaDTO) {
 		return new Marca(marcaDTO.getId(), marcaDTO.getNome());
 	}
-	
-	public void updateData(Marca newMarca, Marca marca) {
+
+	private void updateData(Marca newMarca, Marca marca) {
 		newMarca.setNome(marca.getNome());
 	}
 

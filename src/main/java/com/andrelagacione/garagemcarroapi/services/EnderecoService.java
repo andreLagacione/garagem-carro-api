@@ -67,7 +67,7 @@ public class EnderecoService {
         );
     }
 
-    public void updateData(Endereco newEndereco, Endereco endereco) {
+    private void updateData(Endereco newEndereco, Endereco endereco) {
         newEndereco.setLogradouro(endereco.getLogradouro());
         newEndereco.setNumero(endereco.getNumero());
         newEndereco.setComplemento(endereco.getComplemento());
