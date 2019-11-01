@@ -37,9 +37,10 @@ public class ModeloService {
 
         if (idMarca != null) {
             modelos = this.modeloRepository.findByMarcaPageable(idMarca, pageRequest);
+        } else {
+            modelos = this.modeloRepository.findAll(pageRequest);
         }
 
-        modelos = this.modeloRepository.findAll(pageRequest);
         Page<ModeloDTO> modeloDTO = modelos.map(obj -> new ModeloDTO(obj));
         return modeloDTO;
     }
