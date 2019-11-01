@@ -1,13 +1,14 @@
 package com.andrelagacione.garagemcarroapi.resources;
 
-import com.andrelagacione.garagemcarroapi.domain.Marca;
 import com.andrelagacione.garagemcarroapi.domain.Modelo;
 import com.andrelagacione.garagemcarroapi.dto.ModeloDTO;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
 import com.andrelagacione.garagemcarroapi.services.MarcaService;
 import com.andrelagacione.garagemcarroapi.services.ModeloService;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -31,9 +31,7 @@ public class ModeloResource {
     public ResponseEntity<List<ModeloDTO>> findAll(
             @RequestParam("idMarca") Integer idMarca
     ) {
-        List<Modelo> modelos = this.modeloService.findByMarca(idMarca);
-        List<ModeloDTO> modeloDTO = modelos.stream().map(obj -> new ModeloDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(modeloDTO);
+        return ResponseEntity.ok().body(this.modeloService.findByMarca(idMarca));
     }
 
     @RequestMapping(method=RequestMethod.GET)
@@ -44,45 +42,39 @@ public class ModeloResource {
             @RequestParam(value="ordrBy", defaultValue="nome") String orderBy,
             @RequestParam(value="direction", defaultValue="ASC") String direction
     ) {
-        Page<Modelo> modelos = this.modeloService.findPage(page, size, direction, orderBy, idMarca);
-        Page<ModeloDTO> modeloDTO = modelos.map(obj -> new ModeloDTO(obj));
-        return ResponseEntity.ok().body(modeloDTO);
+        return ResponseEntity.ok().body(this.modeloService.findPage(page, size, direction, orderBy, idMarca));
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Modelo> find(@PathVariable Integer id) throws ObjectNotFoundException {
-        Modelo modelo = this.modeloService.find(id);
-        return ResponseEntity.ok().body(modelo);
+        return ResponseEntity.ok().body(this.modeloService.find(id));
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody ModeloDTO modeloDTO) {
-        Modelo modelo = this.modeloService.fromDto(modeloDTO);
-        Marca marca = this.marcaService.find(modeloDTO.getMarca().getId());
-        modelo.setMarca(marca);
-        modelo = this.modeloService.insert(modelo);
+    public ResponseEntity<PadraoMensagemRetorno> insert(@Valid @RequestBody ModeloDTO modeloDTO) {
+        Modelo modelo = this.modeloService.salvarDados(modeloDTO, true);
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Modelo criado com sucesso!");
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(modelo.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+
+        return ResponseEntity.created(uri).body(mensagemRetorno);
     }
 
-    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public ResponseEntity<Void> update(
-            @Valid @RequestBody ModeloDTO modeloDTO,
-            @PathVariable Integer id
+    @RequestMapping(method=RequestMethod.PUT)
+    public ResponseEntity<PadraoMensagemRetorno> update(
+            @Valid @RequestBody ModeloDTO modeloDTO
     ) throws ObjectNotFoundException {
-        Modelo modelo = this.modeloService.fromDto(modeloDTO);
-        modelo.setId(id);
-        Marca marca = this.marcaService.find(modeloDTO.getMarca().getId());
-        modelo.setMarca(marca);
-        modelo = this.modeloService.update(modelo);
-        return ResponseEntity.noContent().build();
+        this.modeloService.salvarDados(modeloDTO, false);
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Modelo editado com sucesso!");
+        return ResponseEntity.ok().body(mensagemRetorno);
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+    public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
         this.modeloService.delete(id);
-        return ResponseEntity.noContent().build();
+        PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Modelo removido com sucesso!");
+        return ResponseEntity.ok().body(mensagemRetorno);
     }
 
 }
