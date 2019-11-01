@@ -13,19 +13,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TipoPessoaService {
     @Autowired
     private TipoPessoaRepository tipoPessoaRepository;
 
-    public List<TipoPessoa> findAll() {
-        return this.tipoPessoaRepository.findAll();
+    public List<TipoPessoaDTO> findAll() {
+        List<TipoPessoa> tipoPessoas = this.tipoPessoaRepository.findAll();
+        List<TipoPessoaDTO> tipoPessoaDTO = tipoPessoas.stream().map(obj -> new TipoPessoaDTO(obj)).collect(Collectors.toList());
+        return tipoPessoaDTO;
     }
 
-    public Page<TipoPessoa> findPage(Integer page, Integer size, String orderBy, String direction) {
+    public Page<TipoPessoaDTO> findPage(Integer page, Integer size, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
-        return this.tipoPessoaRepository.findAll(pageRequest);
+        Page<TipoPessoa> tipoPessoa = this.tipoPessoaRepository.findAll(pageRequest);
+        Page<TipoPessoaDTO> tipoPessoaDTO = tipoPessoa.map(obj -> new TipoPessoaDTO(obj));
+        return tipoPessoaDTO;
     }
 
     public TipoPessoa find(Integer id) throws ObjectNotFoundException {
@@ -33,19 +38,19 @@ public class TipoPessoaService {
         return tipoPessoa.orElseThrow(() -> new ObjectNotFoundException("Tipo de pessoa não encontrada!"));
     }
 
-    public TipoPessoa insert(TipoPessoa tipoPessoa) {
+    private TipoPessoa insert(TipoPessoa tipoPessoa) {
         tipoPessoa.setId(null);
         return this.tipoPessoaRepository.save(tipoPessoa);
     }
 
-    public TipoPessoa update(TipoPessoa tipoPessoa) throws ObjectNotFoundException {
+    private TipoPessoa update(TipoPessoa tipoPessoa) throws ObjectNotFoundException {
         TipoPessoa newTipoPessoa = find(tipoPessoa.getId());
-        updateData(newTipoPessoa, tipoPessoa);
+        this.updateData(newTipoPessoa, tipoPessoa);
         return this.tipoPessoaRepository.save(newTipoPessoa);
     }
 
     public void delete(Integer id) throws ObjectNotFoundException {
-        find(id);
+        this.find(id);
 
         try {
             this.tipoPessoaRepository.deleteById(id);
@@ -54,14 +59,24 @@ public class TipoPessoaService {
         }
     }
 
-    public TipoPessoa fromDto(TipoPessoaDTO tipoPessoaDTO) {
+    private TipoPessoa fromDto(TipoPessoaDTO tipoPessoaDTO) {
         return new TipoPessoa(
                 tipoPessoaDTO.getId(),
                 tipoPessoaDTO.getDescricao()
         );
     }
 
-    public void updateData(TipoPessoa newTipoPessoa, TipoPessoa tipoPessoa) {
+    private void updateData(TipoPessoa newTipoPessoa, TipoPessoa tipoPessoa) {
         newTipoPessoa.setDescricao(tipoPessoa.getDescricao());
+    }
+
+    public TipoPessoa salvarDados(TipoPessoaDTO tipoPessoaDTO, Boolean adicionar) {
+        TipoPessoa tipoPessoa = this.fromDto(tipoPessoaDTO);
+
+        if (adicionar) {
+            return this.insert(tipoPessoa);
+        }
+
+        return this.update(tipoPessoa);
     }
 }

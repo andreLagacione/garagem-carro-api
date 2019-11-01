@@ -1,11 +1,7 @@
 package com.andrelagacione.garagemcarroapi.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tipo_pessoa")
@@ -18,10 +14,6 @@ public class TipoPessoa implements Serializable {
 
     @Column(name = "descricao", nullable = false)
     private String descricao;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "tipoPessoa")
-    private List<Pessoa> pessoa = new ArrayList<>();
 
     public TipoPessoa() {}
 
@@ -44,13 +36,5 @@ public class TipoPessoa implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao=descricao;
-    }
-
-    public List<Pessoa> getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(List<Pessoa> pessoa) {
-        this.pessoa=pessoa;
     }
 }
