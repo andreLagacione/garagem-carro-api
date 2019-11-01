@@ -34,8 +34,6 @@ public class PessoaDTO implements Serializable {
     @NotNull(message="Informe o tipo da pessoa.")
     private TipoPessoa tipoPessoa;
 
-    private Integer idTipoPessoa;
-
     public PessoaDTO() {}
 
     public PessoaDTO(Pessoa pessoa) {
@@ -93,13 +91,5 @@ public class PessoaDTO implements Serializable {
 
     public void setTipoPessoa(TipoPessoa tipoPessoa) {
         this.tipoPessoa = tipoPessoa;
-    }
-
-    public Integer getIdTipoPessoa() {
-        return idTipoPessoa;
-    }
-
-    public void setIdTipoPessoa(Integer idTipoPessoa) {
-        this.idTipoPessoa = idTipoPessoa;
     }
 }
