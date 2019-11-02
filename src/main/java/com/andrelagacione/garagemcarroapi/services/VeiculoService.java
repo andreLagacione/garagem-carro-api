@@ -1,23 +1,23 @@
 package com.andrelagacione.garagemcarroapi.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.andrelagacione.garagemcarroapi.domain.Categoria;
+import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import com.andrelagacione.garagemcarroapi.domain.Veiculo;
+import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
+import com.andrelagacione.garagemcarroapi.repositories.ModeloRepository;
+import com.andrelagacione.garagemcarroapi.repositories.VeiculoRepository;
+import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.andrelagacione.garagemcarroapi.domain.Categoria;
-import com.andrelagacione.garagemcarroapi.domain.Veiculo;
-import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
-import com.andrelagacione.garagemcarroapi.repositories.CategoriaRespository;
-import com.andrelagacione.garagemcarroapi.repositories.VeiculoRepository;
-import com.andrelagacione.garagemcarroapi.services.exceptions.ObjectNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VeiculoService {
@@ -25,42 +25,43 @@ public class VeiculoService {
 	private VeiculoRepository veiculoRepository;
 	
 	@Autowired
-	private CategoriaRespository categoriaRespository;
-	
+	private ModeloRepository modeloRepository;
+
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	public List<Veiculo> findAll() {
-		return veiculoRepository.findAll();
+	public List<VeiculoDTO> findAll() {
+		List<Veiculo> veiculos = this.veiculoRepository.findAll();
+		List<VeiculoDTO> veiculoDTO = veiculos.stream().map(obj -> new VeiculoDTO(obj)).collect(Collectors.toList());
+		return veiculoDTO;
 	}
 	
-	public Page<Veiculo> findPage(Integer page, Integer size, String direction, String orderBy) {
+	public Page<VeiculoDTO> findPage(Integer page, Integer size, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
-		return veiculoRepository.findAll(pageRequest);
+		Page<Veiculo> veiculos = this.veiculoRepository.findAll(pageRequest);
+		Page<VeiculoDTO> veiculoDTO = veiculos.map(obj -> new VeiculoDTO(obj));
+		return veiculoDTO;
 	}
 	
 	public Veiculo find(Integer id) throws ObjectNotFoundException {
 		Optional<Veiculo> veiculoById = veiculoRepository.findById(id);
-		// TODO - para mostrar na tela, fazer um end-point pra buscar as categorias separadas
 		return veiculoById.orElseThrow(() -> new ObjectNotFoundException("Veiculo não encontrado!"));
 	}
 	
-	@Transactional
-	public Veiculo insert(Veiculo veiculo) {
+	private Veiculo insert(Veiculo veiculo) {
 		veiculo.setId(null);
 		veiculo = veiculoRepository.save(veiculo);
-		categoriaRespository.saveAll(veiculo.getCategorias());
 		return veiculo;
 	}
 	
-	public Veiculo update(Veiculo veiculo) throws ObjectNotFoundException {
+	private Veiculo update(Veiculo veiculo) throws ObjectNotFoundException {
 		Veiculo newVeiculo = find(veiculo.getId());
-		updateData(newVeiculo, veiculo);
+		this.updateData(newVeiculo, veiculo);
 		return veiculoRepository.save(newVeiculo);
 	}
 	
 	public void delete(Integer id) throws ObjectNotFoundException {
-		find(id);
+		this.find(id);
 		
 		try {
 			veiculoRepository.deleteById(id);
@@ -68,8 +69,8 @@ public class VeiculoService {
 			throw new DataIntegrityViolationException("Erro ao excluir veículo.");
 		}
 	}
-	
-	public Veiculo fromDto(VeiculoDTO veiculoDTO) {
+
+	private Veiculo fromDto(VeiculoDTO veiculoDTO) {
 		return new Veiculo(
 				veiculoDTO.getId(),
 				veiculoDTO.getValor(),
@@ -82,8 +83,8 @@ public class VeiculoService {
 				veiculoDTO.getModelo()
 		);
 	}
-	
-	public void updateData(Veiculo newVeiculo, Veiculo veiculo) {
+
+	private void updateData(Veiculo newVeiculo, Veiculo veiculo) {
 		newVeiculo.setValor(veiculo.getValor());
 		newVeiculo.setCor(veiculo.getCor());
 		newVeiculo.setCavalos(veiculo.getCavalos());
@@ -94,7 +95,7 @@ public class VeiculoService {
 		newVeiculo.setCategorias(veiculo.getCategorias());
 	}
 	
-	public Veiculo setarCategorias(Veiculo veiculo, List<Categoria> categorias) {
+	private Veiculo setarCategorias(Veiculo veiculo, List<Categoria> categorias) {
 		List<Categoria> listaCategorias = new ArrayList<Categoria>();
 		for (Categoria i : categorias) {
 			Categoria categoria = categoriaService.find(i.getId());
@@ -103,5 +104,22 @@ public class VeiculoService {
 		
 		veiculo.setCategorias(listaCategorias);
 		return veiculo;
+	}
+
+	public Veiculo salvarDados(VeiculoDTO veiculoDTO, Boolean adicionar) {
+		Optional<Modelo> modelo = this.modeloRepository.findById(veiculoDTO.getModelo().getId());
+
+		if (!modelo.isPresent()) {
+			throw new ObjectNotFoundException("O modelo informado não foi encontrado. Por favor selecione um modelo válido!");
+		}
+
+		Veiculo veiculo = this.fromDto(veiculoDTO);
+		veiculo = this.setarCategorias(veiculo, veiculo.getCategorias());
+
+		if (adicionar) {
+			return this.insert(veiculo);
+		}
+
+		return this.update(veiculo);
 	}
 }

@@ -1,32 +1,21 @@
 package com.andrelagacione.garagemcarroapi.resources;
 
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import com.andrelagacione.garagemcarroapi.domain.Veiculo;
+import com.andrelagacione.garagemcarroapi.dto.PadraoMensagemRetorno;
+import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
 import com.andrelagacione.garagemcarroapi.services.ModeloService;
+import com.andrelagacione.garagemcarroapi.services.VeiculoService;
+import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.andrelagacione.garagemcarroapi.domain.Marca;
-import com.andrelagacione.garagemcarroapi.domain.Veiculo;
-import com.andrelagacione.garagemcarroapi.dto.VeiculoDTO;
-import com.andrelagacione.garagemcarroapi.services.MarcaService;
-import com.andrelagacione.garagemcarroapi.services.VeiculoService;
-
-import javassist.tools.rmi.ObjectNotFoundException;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -40,9 +29,7 @@ public class VeiculoResource {
 	
 	@RequestMapping(value="/lista", method=RequestMethod.GET)
 	public ResponseEntity<List<VeiculoDTO>> findAll() {
-		List<Veiculo> veiculos = veiculoService.findAll();
-		List<VeiculoDTO> veiculosDTO = veiculos.stream().map(obj -> new VeiculoDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(veiculosDTO);
+		return ResponseEntity.ok().body(this.veiculoService.findAll());
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -52,47 +39,39 @@ public class VeiculoResource {
 			@RequestParam(value="ordrBy", defaultValue="modelo") String orderBy,
 			@RequestParam(value="direction", defaultValue="ASC") String direction
 	) {
-		Page<Veiculo> veiculos = veiculoService.findPage(page, size, direction, orderBy);
-		Page<VeiculoDTO> veiculosDTO = veiculos.map(obj -> new VeiculoDTO(obj));
-		return ResponseEntity.ok().body(veiculosDTO);
+		return ResponseEntity.ok().body(this.veiculoService.findPage(page, size, direction, orderBy));
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Veiculo> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		Veiculo veiculo = veiculoService.find(id);
-		return ResponseEntity.ok().body(veiculo);
+		return ResponseEntity.ok().body(this.veiculoService.find(id));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody VeiculoDTO veiculoDTO) throws Error {
-		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
-		Modelo modelo = modeloService.find(veiculoDTO.getModelo().getId());
-		veiculo.setModelo(modelo);
-		veiculoService.setarCategorias(veiculo, veiculoDTO.getCategorias());
-		veiculo = veiculoService.insert(veiculo);
+	public ResponseEntity<PadraoMensagemRetorno> insert(@RequestBody VeiculoDTO veiculoDTO) throws Error {
+		Veiculo veiculo = this.veiculoService.salvarDados(veiculoDTO, true);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.CREATED, HttpStatus.valueOf("CREATED").value(), "Veículo criado com sucesso!");
+
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(veiculo.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+
+		return ResponseEntity.created(uri).body(mensagemRetorno);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(
-		@Valid @RequestBody VeiculoDTO veiculoDTO,
-		@PathVariable Integer id
+	@RequestMapping(method=RequestMethod.PUT)
+	public ResponseEntity<PadraoMensagemRetorno> update(
+		@Valid @RequestBody VeiculoDTO veiculoDTO
 	) throws ObjectNotFoundException {
-		Veiculo veiculo = veiculoService.fromDto(veiculoDTO);
-		veiculo.setId(id);
-		Modelo modelo = modeloService.find(veiculoDTO.getModelo().getId());
-		veiculo.setModelo(modelo);
-		veiculoService.setarCategorias(veiculo, veiculoDTO.getCategorias());
-		veiculo = veiculoService.update(veiculo);
-		return ResponseEntity.noContent().build();
+		this.veiculoService.salvarDados(veiculoDTO, false);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Veículo editado com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		veiculoService.delete(id);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<PadraoMensagemRetorno> delete(@PathVariable Integer id) throws ObjectNotFoundException {
+		this.veiculoService.delete(id);
+		PadraoMensagemRetorno mensagemRetorno = new PadraoMensagemRetorno(HttpStatus.OK, HttpStatus.valueOf("OK").value(), "Veículo editado com sucesso!");
+		return ResponseEntity.ok().body(mensagemRetorno);
 	}
 	
 }

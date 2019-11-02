@@ -16,7 +16,7 @@ public class VeiculoDTO implements Serializable {
 	
 	private Integer id;
 
-	@NotEmpty(message = "Informe um valor")
+	@NotNull(message = "Informe um valor")
 	private Double valor;
 
 	@NotEmpty(message = "Informe uma cor")
@@ -30,8 +30,7 @@ public class VeiculoDTO implements Serializable {
 	@Size(min = 3, max = 500, message = "O tamanho tem que estar entre 3 e 500 caractéres")
 	private String descricao;
 
-	@NotEmpty(message = "Informe pelo menos uma categoria")
-	@Length(min = 1)
+	@NotNull(message = "Informe pelo menos uma categoria")
 	private List<Categoria> categorias;
 
 	@NotNull(message = "Selecione o modelo.")
