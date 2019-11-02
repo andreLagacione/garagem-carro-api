@@ -16,10 +16,10 @@ public class Veiculo implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "valor")
+	@Column(name = "valor", nullable = false)
 	private Double valor;
 
-	@Column(name = "cor")
+	@Column(name = "cor", nullable = false)
 	private String cor;
 
 	@Column(name = "cavalos")
@@ -31,11 +31,11 @@ public class Veiculo implements Serializable {
 	@Column(name = "portas")
 	private Integer portas;
 
-	@Column(name = "descricao")
+	@Column(name = "descricao", nullable = false)
 	private String descricao;
 
 	@ManyToOne
-	@JoinColumn(name="modelo_id")
+	@JoinColumn(name="modelo_id", nullable = false)
 	private Modelo modelo;
 	
 	@JsonIgnore

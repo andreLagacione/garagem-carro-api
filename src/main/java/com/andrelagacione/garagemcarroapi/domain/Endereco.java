@@ -18,7 +18,7 @@ public class Endereco implements Serializable {
     @Column(name = "numero", nullable = false)
     private String numero;
 
-    @Column(name = "complemento")
+    @Column(name = "complemento", nullable = true)
     private String complemento;
 
     @Column(name = "bairro", nullable = false)
@@ -30,11 +30,11 @@ public class Endereco implements Serializable {
     @Column(name = "apelido", nullable = false)
     private String apelido;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pessoa", referencedColumnName = "id", nullable = false)
     private Pessoa pessoa;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cidade", referencedColumnName = "id", nullable = false)
     private Cidade cidade;
 

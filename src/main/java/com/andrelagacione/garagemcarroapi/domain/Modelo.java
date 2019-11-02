@@ -15,8 +15,8 @@ public class Modelo implements Serializable {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "marca_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "marca_id", nullable = false)
     private Marca marca;
 
     public Modelo() {}

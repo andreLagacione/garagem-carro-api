@@ -16,11 +16,11 @@ public class Cidade implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "nome")
+	@Column(name = "nome", nullable = false)
 	private String nome;
 	
 	@ManyToOne
-	@JoinColumn(name="estado_id")
+	@JoinColumn(name="estado_id", nullable = false)
 	private Estado estado;
 
 	@JsonIgnore

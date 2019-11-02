@@ -12,13 +12,13 @@ public class Menu implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "nome")
+	@Column(name = "nome", nullable = false)
 	private String nome;
 
-	@Column(name = "url")
+	@Column(name = "url", nullable = false)
 	private String url;
 
-	@Column(name = "icone")
+	@Column(name = "icone", nullable = false)
 	private String icone;
 	
 	public Menu() {}

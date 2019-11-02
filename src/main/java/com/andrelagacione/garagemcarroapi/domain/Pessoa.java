@@ -16,19 +16,19 @@ public class Pessoa implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "cpfCnpj")
+    @Column(name = "cpfCnpj", nullable = false)
     private String cpfCnpj;
 
-    @Column(name = "telefone")
+    @Column(name = "telefone", nullable = false)
     private String telefone;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tipo_pessoa", referencedColumnName = "id", nullable = false)
     private TipoPessoa tipoPessoa;
 
