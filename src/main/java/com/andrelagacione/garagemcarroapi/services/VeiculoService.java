@@ -44,27 +44,26 @@ public class VeiculoService {
 	}
 	
 	public Veiculo find(Integer id) throws ObjectNotFoundException {
-		Optional<Veiculo> veiculoById = veiculoRepository.findById(id);
+		Optional<Veiculo> veiculoById = this.veiculoRepository.findById(id);
 		return veiculoById.orElseThrow(() -> new ObjectNotFoundException("Veiculo não encontrado!"));
 	}
 	
 	private Veiculo insert(Veiculo veiculo) {
 		veiculo.setId(null);
-		veiculo = veiculoRepository.save(veiculo);
-		return veiculo;
+		return this.veiculoRepository.save(veiculo);
 	}
 	
 	private Veiculo update(Veiculo veiculo) throws ObjectNotFoundException {
-		Veiculo newVeiculo = find(veiculo.getId());
+		Veiculo newVeiculo = this.find(veiculo.getId());
 		this.updateData(newVeiculo, veiculo);
-		return veiculoRepository.save(newVeiculo);
+		return this.veiculoRepository.save(newVeiculo);
 	}
 	
 	public void delete(Integer id) throws ObjectNotFoundException {
 		this.find(id);
 		
 		try {
-			veiculoRepository.deleteById(id);
+			this.veiculoRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityViolationException("Erro ao excluir veículo.");
 		}
@@ -98,7 +97,7 @@ public class VeiculoService {
 	private Veiculo setarCategorias(Veiculo veiculo, List<Categoria> categorias) {
 		List<Categoria> listaCategorias = new ArrayList<Categoria>();
 		for (Categoria i : categorias) {
-			Categoria categoria = categoriaService.find(i.getId());
+			Categoria categoria = this.categoriaService.find(i.getId());
 			listaCategorias.add(categoria);
 		}
 		
