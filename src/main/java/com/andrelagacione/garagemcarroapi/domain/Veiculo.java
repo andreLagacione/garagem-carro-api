@@ -22,13 +22,13 @@ public class Veiculo implements Serializable {
 	@Column(name = "cor", nullable = false)
 	private String cor;
 
-	@Column(name = "cavalos")
+	@Column(name = "cavalos", nullable = true)
 	private Double cavalos;
 
-	@Column(name = "cilindradas")
+	@Column(name = "cilindradas", nullable = true)
 	private Double cilindradas;
 
-	@Column(name = "portas")
+	@Column(name = "portas", nullable = true)
 	private Integer portas;
 
 	@Column(name = "descricao", nullable = false)
@@ -37,6 +37,10 @@ public class Veiculo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="modelo_id", nullable = false)
 	private Modelo modelo;
+
+	@ManyToOne
+	@JoinColumn(name = "tipo_veiculo_id", nullable = false)
+	private TipoVeiculo tipoVeiculo;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -49,8 +53,7 @@ public class Veiculo implements Serializable {
 	
 	public Veiculo() {}
 
-	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String descricao, List<Categoria> categorias, Modelo modelo) {
-		super();
+	public Veiculo(Integer id, Double valor, String cor, Double cavalos, Double cilindradas, Integer portas, String descricao, List<Categoria> categorias, Modelo modelo, TipoVeiculo tipoVeiculo) {
 		this.id = id;
 		this.valor = valor;
 		this.cor = cor;
@@ -60,6 +63,7 @@ public class Veiculo implements Serializable {
 		this.descricao = descricao;
 		this.categorias = categorias;
 		this.modelo = modelo;
+		this.tipoVeiculo = tipoVeiculo;
 	}
 
 	public Integer getId() {
@@ -132,5 +136,13 @@ public class Veiculo implements Serializable {
 
 	public void setModelo(Modelo modelo) {
 		this.modelo = modelo;
+	}
+
+	public TipoVeiculo getTipoVeiculo() {
+		return tipoVeiculo;
+	}
+
+	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
+		this.tipoVeiculo = tipoVeiculo;
 	}
 }

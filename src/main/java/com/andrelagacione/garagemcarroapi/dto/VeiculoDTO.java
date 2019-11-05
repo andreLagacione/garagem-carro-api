@@ -2,8 +2,8 @@ package com.andrelagacione.garagemcarroapi.dto;
 
 import com.andrelagacione.garagemcarroapi.domain.Categoria;
 import com.andrelagacione.garagemcarroapi.domain.Modelo;
+import com.andrelagacione.garagemcarroapi.domain.TipoVeiculo;
 import com.andrelagacione.garagemcarroapi.domain.Veiculo;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -16,25 +16,28 @@ public class VeiculoDTO implements Serializable {
 	
 	private Integer id;
 
-	@NotNull(message = "Informe um valor")
+	@NotNull(message = "Informe um valor.")
 	private Double valor;
 
-	@NotEmpty(message = "Informe uma cor")
-	@Size(min = 3, max = 30, message = "O tamanho tem que estar entre 3 e 30 caractéres")
+	@NotEmpty(message = "Informe uma cor.")
+	@Size(min = 3, max = 30, message = "O tamanho tem que estar entre 3 e 30 caractéres.")
 	private String cor;
 	private Double cavalos;
 	private Double cilindradas;
 	private Integer portas;
 
-	@NotEmpty(message = "Informe uma descrição")
-	@Size(min = 3, max = 500, message = "O tamanho tem que estar entre 3 e 500 caractéres")
+	@NotEmpty(message = "Informe uma descrição.")
+	@Size(min = 3, max = 500, message = "O tamanho tem que estar entre 3 e 500 caractéres.")
 	private String descricao;
 
-	@NotNull(message = "Informe pelo menos uma categoria")
+	@NotNull(message = "Informe pelo menos uma categoria.")
 	private List<Categoria> categorias;
 
 	@NotNull(message = "Selecione o modelo.")
 	private Modelo modelo;
+
+	@NotNull(message = "Selecione o tipo de veículo.")
+	private TipoVeiculo tipoVeiculo;
 
 	public VeiculoDTO() {}
 	
@@ -48,6 +51,7 @@ public class VeiculoDTO implements Serializable {
 		this.descricao = veiculo.getDescricao();
 		this.categorias = veiculo.getCategorias();
 		this.modelo = veiculo.getModelo();
+		this.tipoVeiculo = veiculo.getTipoVeiculo();
 	}
 
 	public Integer getId() {
@@ -120,5 +124,13 @@ public class VeiculoDTO implements Serializable {
 
 	public void setModelo(Modelo modelo) {
 		this.modelo = modelo;
+	}
+
+	public TipoVeiculo getTipoVeiculo() {
+		return tipoVeiculo;
+	}
+
+	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
+		this.tipoVeiculo = tipoVeiculo;
 	}
 }
