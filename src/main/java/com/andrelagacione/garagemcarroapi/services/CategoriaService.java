@@ -74,12 +74,10 @@ public class CategoriaService {
 		Categoria categoria = this.fromDto(categoriaDTO);
 
 		if (adicionar) {
-			this.insert(categoria);
-			return categoria;
+			return this.insert(categoria);
 		}
 
-		this.update(categoria);
-		return categoria;
+		return this.update(categoria);
 
 	}
 }
